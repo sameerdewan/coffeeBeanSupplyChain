@@ -50,11 +50,11 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
     event Harvested(uint upc);
     event Processed(uint upc);
     event Packed(uint upc);
-    event ForSale(uint upc);
+    event AddedToPalette(uint upc);
     event Sold(uint upc);
     event Shipped(uint upc);
     event Received(uint upc);
-    event Purchased(uint upc);
+    event Bought(uint upc);
 
     modifier verifyCaller (address _address) {
         require(msg.sender == _address, 'Error: Caller is unverified');
@@ -135,17 +135,34 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
         emit Harvested(_upc);
         sku = sku + 1;
     }
-    function processCoffee() {
-
+    function processCoffee(
+        uint _upc
+    ) public harvested(_upc) verifyCaller(items[_upc].originFarmerID) onlyFarmer {
+        items[_upc].itemState = State.Processed;
+        emit Processed(_upc);
     }
-    function packCoffee() {
-
+    function packCoffee(
+        uint _upc
+    ) public processed(_upc) verifyCaller(items[_upc].originFarmerID) onlyFarmer {
+        items[_upc].itemState = State.Packed;
+        emit Packed(_upc);
     }
-    function addCoffeeToPalette() {
-
+    function addCoffeeToPalette(
+        uint _upc,
+        uint _productPrice
+    )  public packed(_upc) verifyCaller(items[_upc].originFarmerID) onlyFarmer {
+        items[_upc].productPrice = _productPrice;
+        items[_upc].itemState = State.AddedToPalette;
+        emit AddedToPalette(_upc);
     }
-    function buyCoffeePalette() {
-
+    function buyCoffeePalette(
+        uint _upc
+    ) public addedToPalette(_upc) paidEnough(items[_upc].productPrice) refundExcess(_upc) onlyDistributor {
+        items[_upc].ownerID = msg.sender;
+        items[_upc].distributorID = msg.sender;
+        items[_upc].itemState = State.Sold;
+        items[_upc].originFarmerID.transfer(items[_upc].productPrice);
+        emit Sold(_upc);
     }
     function shipCoffeePalette() {
 
