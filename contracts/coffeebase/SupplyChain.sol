@@ -114,6 +114,7 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
             selfdestruct(owner);
         }
     }
+
     function harvestCoffee(
     uint _upc,
     address payable _originFarmerId,
@@ -135,18 +136,21 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
         emit Harvested(_upc);
         sku = sku + 1;
     }
+
     function processCoffee(
         uint _upc
     ) public harvested(_upc) verifyCaller(items[_upc].originFarmerID) onlyFarmer {
         items[_upc].itemState = State.Processed;
         emit Processed(_upc);
     }
+
     function packCoffee(
         uint _upc
     ) public processed(_upc) verifyCaller(items[_upc].originFarmerID) onlyFarmer {
         items[_upc].itemState = State.Packed;
         emit Packed(_upc);
     }
+
     function addCoffeeToPalette(
         uint _upc,
         uint _productPrice
@@ -155,6 +159,7 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
         items[_upc].itemState = State.AddedToPalette;
         emit AddedToPalette(_upc);
     }
+
     function buyCoffeePalette(
         uint _upc
     ) public addedToPalette(_upc) paidEnough(items[_upc].productPrice) refundExcess(_upc) onlyDistributor {
@@ -164,18 +169,23 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
         items[_upc].originFarmerID.transfer(items[_upc].productPrice);
         emit Sold(_upc);
     }
+
     function shipCoffeePalette() {
 
     }
+
     function receiveCoffeePalette() {
 
     }
+
     function buyCoffee() {
 
     }
+
     function fetchCoffee() {
 
     }
+
     function fetchCoffeeHistory() {
 
     }
