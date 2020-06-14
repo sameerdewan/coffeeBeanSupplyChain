@@ -13,7 +13,7 @@
   "author": "Sameer Dewan",
   "license": "ISC",
   "dependencies": {
-    "@openzeppelin/contracts": "^3.0.2",
-    "@truffle/hdwallet-provider": "^1.0.35"
+    "@openzeppelin/contracts": "3.0.2",
+    "@truffle/hdwallet-provider": "1.0.35"
   }
 }
