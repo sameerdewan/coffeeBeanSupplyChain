@@ -170,16 +170,29 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
         emit Sold(_upc);
     }
 
-    function shipCoffeePalette() {
-
+    function shipCoffeePalette(
+        uint _upc
+    ) public sold(_upc) verifyCaller(items[_upc].ownerID) onlyDistributor {
+        items[_upc].itemState = State.Shipped;
+        emit Shipped(_upc);
     }
 
-    function receiveCoffeePalette() {
-
+    function receiveCoffeePalette(
+        uint _upc
+    ) public shipped(_upc) onlyRetailer {
+        items[_upc].ownerID = msg.sender;
+        items[_upc].retailerID = msg.sender;
+        items[_upc].itemState = State.Received;
+        emit Received(_upc);
     }
 
-    function buyCoffee() {
-
+    function buyCoffee(
+        uint _upc
+    ) public received(_upc) onlyConsumer {
+        items[_upc].ownerID = msg.sender;
+        items[_upc].consumerID = msg.sender;
+        items[_upc].itemState = State.Bought;
+        emit Bought(_upc);
     }
 
     function fetchCoffee() {
