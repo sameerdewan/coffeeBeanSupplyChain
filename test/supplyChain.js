@@ -207,6 +207,34 @@ describe('Coffee Bean Supply Chain', () => {
             assert.equal(resultCoffeeSupplyChain[4], consumerID, 'Error: Missing or Invalid consumerID');
             assert.equal(eventEmitted, true, 'Invalid event emitted');
         });
+
+        it('should correctly run fetchCoffee()', async () => {
+            const supplyChain = await SupplyChain.deployed(originFarmerID, distributorID, retailerID);
+            
+            const resultCoffeeSupplyChain = await supplyChain.fetchCoffee.call(upc);
+            assert.equal(resultCoffeeSupplyChain[0], sku, 'Error: Invalid item SKU');
+            assert.equal(resultCoffeeSupplyChain[1], upc, 'Error: Invalid item UPC');
+            assert.equal(Number(resultCoffeeSupplyChain[2]), itemState + 8, 'Error: Invalid itemState');
+            assert.equal(resultCoffeeSupplyChain[3], consumerID, 'Error: Missing or Invalid ownerID');
+            assert.equal(resultCoffeeSupplyChain[4], originFarmerID, 'Error: Missing or Invalid originFarmerID');
+            assert.equal(resultCoffeeSupplyChain[5], originFarmName, 'Error: Missing or Invalid originFarmName');
+            assert.equal(resultCoffeeSupplyChain[6], originFarmInformation, 'Error: Missing or Invalid originFarmInformation');
+            assert.equal(resultCoffeeSupplyChain[7], originFarmLatitude, 'Error: Missing or Invalid originFarmLatitude');
+            assert.equal(resultCoffeeSupplyChain[8], originFarmLongitude, 'Error: Missing or Invalid originFarmLongitude');
+            assert.equal(resultCoffeeSupplyChain[9], productNotes, 'Error: Missing or Invalid productNotes');   
+        });
+
+        it('should correctly run fetchCoffeeHistory()', async () => {
+            const supplyChain = await SupplyChain.deployed(originFarmerID, distributorID, retailerID);
+            
+            const resultCoffeeSupplyChain = await supplyChain.fetchCoffeeHistory.call(upc);
+            assert.equal(resultCoffeeSupplyChain[0], consumerID, 'Error: Missing or Invalid ownerID');
+            assert.equal(resultCoffeeSupplyChain[1], originFarmerID, 'Error: Missing or Invalid originFarmerID');
+            assert.equal(resultCoffeeSupplyChain[2], distributorID, 'Error: Missing or Invalid distributorID');
+            assert.equal(resultCoffeeSupplyChain[3], retailerID, 'Error: Missing or Invalid retailerID');
+            assert.equal(resultCoffeeSupplyChain[4], consumerID, 'Error: Missing or Invalid consumerID');
+            assert.equal(Number(resultCoffeeSupplyChain[5]), itemState + 8, 'Error: Invalid itemState');
+        });
     });
 });
 
