@@ -47,7 +47,18 @@ describe('Coffee Bean Supply Chain', () => {
                 eventEmitted = true;
             })
     
-            await supplyChain.harvestCoffee(upc, originFarmerID, originFarmName, originFarmInformation, originFarmLatitude, originFarmLongitude, productNotes)
+            await supplyChain.harvestCoffee(
+                upc, 
+                originFarmerID, 
+                originFarmName, 
+                originFarmInformation, 
+                originFarmLatitude, 
+                originFarmLongitude, 
+                productNotes, 
+                { 
+                    from: originFarmerID 
+                }
+            );
     
             const resultCoffeeSupplyChain = await supplyChain.fetchCoffee.call(upc)
     

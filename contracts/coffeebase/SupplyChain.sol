@@ -1,15 +1,18 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.6.0;
 import '../../node_modules/@openzeppelin/contracts/access/Ownable.sol';
-import '../coffeeaccesscontrol/FarmerRole.sol';
-import '../coffeeaccesscontrol/DistributorRole.sol';
-import '../coffeeaccesscontrol/RetailerRole.sol';
-import '../coffeeaccesscontrol/ConsumerRole.sol';
+import '../../node_modules/@openzeppelin/contracts/access/AccessControl.sol';
 
 
-contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, ConsumerRole {
+contract SupplyChain is Ownable, AccessControl {
 
     address payable contractOwner;
+
+    bytes32 public constant FARMER_ROLE = keccak256('FARMER_ROLE');
+    bytes32 public constant DISTRIBUTOR_ROLE = keccak256('DISTRIBUTOR_ROLE');
+    bytes32 public constant RETAILER_ROLE = keccak256('RETAILER_ROLE');
+    bytes32 public constant CONSUMER_ROLE = keccak256('CONSUMER_ROLE');
+
     uint upc;
     uint sku;
 
@@ -70,6 +73,22 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
         uint amountToReturn = msg.value - _price;
         items[_upc].consumerID.transfer(amountToReturn);
     }
+    modifier onlyFarmer(address _address) {
+        require(hasRole(FARMER_ROLE, _address), 'Error: Not a farmer');
+        _;
+    }
+    modifier onlyDistributor(address _address) {
+        require(hasRole(DISTRIBUTOR_ROLE, _address), 'Error: Not a distributor');
+        _;
+    }
+    modifier onlyRetailer(address _address) {
+        require(hasRole(RETAILER_ROLE, _address), 'Error: Not a retailer');
+        _;
+    }
+    modifier onlyConsumer(address _address) {
+        require(hasRole(CONSUMER_ROLE, _address), 'Error: Not a consumer');
+        _;
+    }
     modifier harvested(uint _upc) {
         require(items[_upc].itemState == State.Harvested, 'Error: Item not yet harvested');
         _;
@@ -123,7 +142,7 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
     string  memory _originFarmLatitude,
     string  memory _originFarmLongitude,
     string  memory _productNotes
-    ) public onlyFarmer {
+    ) public onlyFarmer(msg.sender) {
         items[_upc].sku = sku;
         items[_upc].upc = _upc;
         items[_upc].originFarmerID = _originFarmerId;
@@ -140,14 +159,14 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
 
     function processCoffee(
         uint _upc
-    ) public harvested(_upc) verifyCaller(items[_upc].originFarmerID) {
+    ) public onlyFarmer(msg.sender) harvested(_upc) verifyCaller(items[_upc].originFarmerID) {
         items[_upc].itemState = State.Processed;
         emit Processed(_upc);
     }
 
     function packCoffee(
         uint _upc
-    ) public processed(_upc) verifyCaller(items[_upc].originFarmerID) onlyFarmer {
+    ) public onlyFarmer(msg.sender) processed(_upc) verifyCaller(items[_upc].originFarmerID) {
         items[_upc].itemState = State.Packed;
         emit Packed(_upc);
     }
@@ -155,7 +174,7 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
     function addCoffeeToPalette(
         uint _upc,
         uint _productPrice
-    )  public packed(_upc) verifyCaller(items[_upc].originFarmerID) onlyFarmer {
+    )  public onlyFarmer(msg.sender) packed(_upc) verifyCaller(items[_upc].originFarmerID) {
         items[_upc].productPrice = _productPrice;
         items[_upc].itemState = State.AddedToPalette;
         emit AddedToPalette(_upc);
@@ -163,7 +182,7 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
 
     function buyCoffeePalette(
         uint _upc
-    ) public payable addedToPalette(_upc) paidEnough(items[_upc].productPrice) refundExcess(_upc) onlyDistributor {
+    ) public payable onlyDistributor(msg.sender) addedToPalette(_upc) paidEnough(items[_upc].productPrice) refundExcess(_upc) {
         items[_upc].ownerID = msg.sender;
         items[_upc].distributorID = msg.sender;
         items[_upc].itemState = State.Sold;
@@ -173,14 +192,14 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
 
     function shipCoffeePalette(
         uint _upc
-    ) public sold(_upc) verifyCaller(items[_upc].ownerID) onlyDistributor {
+    ) public onlyDistributor(msg.sender)  sold(_upc) verifyCaller(items[_upc].ownerID) {
         items[_upc].itemState = State.Shipped;
         emit Shipped(_upc);
     }
 
     function receiveCoffeePalette(
         uint _upc
-    ) public shipped(_upc) onlyRetailer {
+    ) public onlyRetailer(msg.sender) shipped(_upc) {
         items[_upc].ownerID = msg.sender;
         items[_upc].retailerID = msg.sender;
         items[_upc].itemState = State.Received;
@@ -189,7 +208,7 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
 
     function buyCoffee(
         uint _upc
-    ) public received(_upc) onlyConsumer {
+    ) public onlyConsumer(msg.sender) received(_upc) {
         items[_upc].ownerID = msg.sender;
         items[_upc].consumerID = msg.sender;
         items[_upc].itemState = State.Bought;
