@@ -39,7 +39,7 @@ describe('Coffee Bean Supply Chain', () => {
         testLogger.logTestsStart();
 
         it('should correctly run harvestCoffee()', async () => {
-            const supplyChain = await SupplyChain.deployed();
+            const supplyChain = await SupplyChain.deployed(originFarmerID, distributorID, retailerID);
         
             let eventEmitted = false;
             
@@ -75,7 +75,7 @@ describe('Coffee Bean Supply Chain', () => {
         });
 
         it('should correctly run processCoffee()', async () => {
-            const supplyChain = await SupplyChain.deployed();
+            const supplyChain = await SupplyChain.deployed(originFarmerID, distributorID, retailerID);
 
             let eventEmitted = false;
 

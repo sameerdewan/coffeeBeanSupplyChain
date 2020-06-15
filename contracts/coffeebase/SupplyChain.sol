@@ -122,7 +122,12 @@ contract SupplyChain is Ownable, AccessControl {
         _;
     }
 
-    constructor() public payable {
+    constructor(address initialFarmer, address initialDistributor, address initialRetailer) public payable {
+        _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        grantRole(FARMER_ROLE, initialFarmer);
+        grantRole(DISTRIBUTOR_ROLE, initialDistributor);
+        grantRole(RETAILER_ROLE, initialRetailer);
+        _setRoleAdmin(CONSUMER_ROLE, RETAILER_ROLE);
         contractOwner = msg.sender;
         sku = 1;
         upc = 1;
@@ -132,6 +137,30 @@ contract SupplyChain is Ownable, AccessControl {
         if (msg.sender == contractOwner) {
             selfdestruct(contractOwner);
         }
+    }
+
+    function addFarmer(
+    address payable _address
+    ) public onlyDistributor(msg.sender) {
+        grantRole(FARMER_ROLE, _address);
+    }
+
+    function addDistributor(
+    address payable _address
+    ) public onlyFarmer(msg.sender) {
+        grantRole(DISTRIBUTOR_ROLE, _address);
+    }
+
+    function addRetailer(
+    address payable _address
+    ) public onlyDistributor(msg.sender) {
+        grantRole(RETAILER_ROLE, _address);
+    }
+
+    function addConsumer(
+    address payable _address
+    ) public onlyRetailer(msg.sender) {
+        grantRole(CONSUMER_ROLE, _address);
     }
 
     function harvestCoffee(
