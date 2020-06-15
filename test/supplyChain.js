@@ -89,5 +89,90 @@ describe('Coffee Bean Supply Chain', () => {
             assert.equal(Number(resultCoffeeSupplyChain[2]), itemState + 1, 'Error: Invalid item state');
             assert.equal(eventEmitted, true, 'Invalid event emitted');
         });
+
+        it('should correctly run packCoffee()', async () => {
+            const supplyChain = await SupplyChain.deployed(originFarmerID, distributorID, retailerID);
+
+            let eventEmitted = false;
+
+            await supplyChain.Packed(() => {
+                eventEmitted = true;
+            });
+
+            await supplyChain.packCoffee(upc, { from: originFarmerID });
+
+            const resultCoffeeSupplyChain = await supplyChain.fetchCoffee.call(upc);
+            assert.equal(Number(resultCoffeeSupplyChain[2]), itemState + 2, 'Error: Invalid item state');
+            assert.equal(eventEmitted, true, 'Invalid event emitted');
+        });
+
+        it('should correctly run addCoffeeToPalette()', async () => {
+            const supplyChain = await SupplyChain.deployed(originFarmerID, distributorID, retailerID);
+
+            let eventEmitted = false;
+
+            await supplyChain.AddedToPalette(() => {
+                eventEmitted = true;
+            });
+
+            await supplyChain.addCoffeeToPalette(upc, productPrice, { from: originFarmerID });
+
+            const resultCoffeeSupplyChain = await supplyChain.fetchCoffee.call(upc);
+            assert.equal(Number(resultCoffeeSupplyChain[2]), itemState + 3, 'Error: Invalid item state');
+            assert.equal(eventEmitted, true, 'Invalid event emitted');
+        });
+
+        it('should correctly run buyCoffeePalette()', async () => {
+            const supplyChain = await SupplyChain.deployed(originFarmerID, distributorID, retailerID);
+
+            let eventEmitted = false;
+
+            await supplyChain.Sold(() => {
+                eventEmitted = true;
+            });
+
+            await supplyChain.buyCoffeePalette(upc, { from: distributorID, value: productPrice });
+
+            const resultCoffeeSupplyChain = await supplyChain.fetchCoffee.call(upc);
+            assert.equal(Number(resultCoffeeSupplyChain[2]), itemState + 4, 'Error: Invalid item state');
+            assert.equal(resultCoffeeSupplyChain[3], distributorID, 'Error: Missing or Invalid ownerID');
+            assert.equal(resultCoffeeSupplyChain[3], distributorID, 'Error: Missing or Invalid distributorID');
+            assert.equal(eventEmitted, true, 'Invalid event emitted');
+        });
+
+        it('should correctly run shipCoffeePalette()', async () => {
+            const supplyChain = await SupplyChain.deployed(originFarmerID, distributorID, retailerID);
+
+            let eventEmitted = false;
+
+            await supplyChain.Shipped(() => {
+                eventEmitted = true;
+            });
+
+            await supplyChain.shipCoffeePalette(upc, { from: distributorID });
+
+            const resultCoffeeSupplyChain = await supplyChain.fetchCoffee.call(upc);
+            assert.equal(Number(resultCoffeeSupplyChain[2]), itemState + 5, 'Error: Invalid item state');
+            assert.equal(eventEmitted, true, 'Invalid event emitted');
+        });
+
+        it('should correctly run receiveCoffeePalette()', async () => {
+            const supplyChain = await SupplyChain.deployed(originFarmerID, distributorID, retailerID);
+    
+            let eventEmitted = false;
+
+            await supplyChain.Received(() => {
+                eventEmitted = true;
+            });
+
+            await supplyChain.receiveCoffeePalette(upc, { from: retailerID });
+
+            const resultCoffeeSupplyChain = await supplyChain.fetchCoffeeHistory.call(upc);
+            assert.equal(Number(resultCoffeeSupplyChain[5]), itemState + 6, 'Error: Invalid item state');
+            assert.equal(resultCoffeeSupplyChain[0], retailerID, 'Error: Missing or Invalid ownerID');
+            assert.equal(resultCoffeeSupplyChain[3], retailerID, 'Error: Missing or Invalid retailerID');
+            assert.equal(eventEmitted, true, 'Invalid event emitted');
+        });
     });
 });
+

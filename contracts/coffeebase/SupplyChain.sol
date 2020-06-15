@@ -27,7 +27,8 @@ contract SupplyChain is Ownable, AccessControl {
         Sold,       // 4
         Shipped,    // 5
         Received,   // 6
-        Bought   // 7
+        SaleInitialized, // 7
+        Bought   // 8
     }
 
     State constant defaultState = State.Harvested;
@@ -57,6 +58,7 @@ contract SupplyChain is Ownable, AccessControl {
     event Sold(uint upc);
     event Shipped(uint upc);
     event Received(uint upc);
+    event SaleInitialized(uint upc);
     event Bought(uint upc);
 
     modifier verifyCaller (address _address) {
@@ -115,6 +117,10 @@ contract SupplyChain is Ownable, AccessControl {
     }
     modifier received(uint _upc) {
         require(items[_upc].itemState == State.Received, 'Error: Item not received');
+        _;
+    }
+    modifier saleInitialized(uint _upc) {
+        require(items[_upc].itemState == State.SaleInitialized, 'Error: Sale not initialized');
         _;
     }
     modifier bought(uint _upc) {
@@ -187,22 +193,22 @@ contract SupplyChain is Ownable, AccessControl {
     }
 
     function processCoffee(
-        uint _upc
+    uint _upc
     ) public onlyFarmer(msg.sender) harvested(_upc) verifyCaller(items[_upc].originFarmerID) {
         items[_upc].itemState = State.Processed;
         emit Processed(_upc);
     }
 
     function packCoffee(
-        uint _upc
+    uint _upc
     ) public onlyFarmer(msg.sender) processed(_upc) verifyCaller(items[_upc].originFarmerID) {
         items[_upc].itemState = State.Packed;
         emit Packed(_upc);
     }
 
     function addCoffeeToPalette(
-        uint _upc,
-        uint _productPrice
+    uint _upc,
+    uint _productPrice
     )  public onlyFarmer(msg.sender) packed(_upc) verifyCaller(items[_upc].originFarmerID) {
         items[_upc].productPrice = _productPrice;
         items[_upc].itemState = State.AddedToPalette;
@@ -210,7 +216,7 @@ contract SupplyChain is Ownable, AccessControl {
     }
 
     function buyCoffeePalette(
-        uint _upc
+    uint _upc
     ) public payable onlyDistributor(msg.sender) addedToPalette(_upc) paidEnough(items[_upc].productPrice) refundExcess(_upc) {
         items[_upc].ownerID = msg.sender;
         items[_upc].distributorID = msg.sender;
@@ -220,14 +226,14 @@ contract SupplyChain is Ownable, AccessControl {
     }
 
     function shipCoffeePalette(
-        uint _upc
+    uint _upc
     ) public onlyDistributor(msg.sender)  sold(_upc) verifyCaller(items[_upc].ownerID) {
         items[_upc].itemState = State.Shipped;
         emit Shipped(_upc);
     }
 
     function receiveCoffeePalette(
-        uint _upc
+    uint _upc
     ) public onlyRetailer(msg.sender) shipped(_upc) {
         items[_upc].ownerID = msg.sender;
         items[_upc].retailerID = msg.sender;
@@ -235,9 +241,18 @@ contract SupplyChain is Ownable, AccessControl {
         emit Received(_upc);
     }
 
+    function initializeSale(
+    uint _upc,
+    address _consumerID
+    ) public onlyRetailer(msg.sender) received(_upc) {
+        items[_upc].itemState = State.SaleInitialized;
+        grantRole(CONSUMER_ROLE, _consumerID);
+        emit SaleInitialized(_upc);
+    }
+
     function buyCoffee(
-        uint _upc
-    ) public onlyConsumer(msg.sender) received(_upc) {
+    uint _upc
+    ) public onlyConsumer(msg.sender) saleInitialized(_upc) {
         items[_upc].ownerID = msg.sender;
         items[_upc].consumerID = msg.sender;
         items[_upc].itemState = State.Bought;
@@ -245,18 +260,18 @@ contract SupplyChain is Ownable, AccessControl {
     }
 
     function fetchCoffee(
-        uint _upc
+    uint _upc
     ) public view returns (
-        uint itemSKU,
-        uint itemUPC,
-        uint itemState,
-        address ownerID,
-        address originFarmerID,
-        string memory originFarmName,
-        string memory originFarmInformation,
-        string memory originFarmLatitude,
-        string memory originFarmLongitude,
-        string memory productNotes
+    uint itemSKU,
+    uint itemUPC,
+    uint itemState,
+    address ownerID,
+    address originFarmerID,
+    string memory originFarmName,
+    string memory originFarmInformation,
+    string memory originFarmLatitude,
+    string memory originFarmLongitude,
+    string memory productNotes
     ) {
         Item memory item = items[_upc];
 
@@ -273,18 +288,22 @@ contract SupplyChain is Ownable, AccessControl {
     }
 
     function fetchCoffeeHistory(
-        uint _upc
+    uint _upc
     ) public view returns (
-        address originFarmerID,
-        address distributorID,
-        address retailerID,
-        address consumerID
+    address ownerID,
+    address originFarmerID,
+    address distributorID,
+    address retailerID,
+    address consumerID,
+    uint itemState
     ) {
         Item memory item = items[_upc];
 
+        ownerID = item.ownerID;
         originFarmerID = item.originFarmerID;
         distributorID = item.distributorID;
         retailerID = item.retailerID;
         consumerID = item.consumerID;
+        itemState = uint(item.itemState);
     }
 }
