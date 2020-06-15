@@ -39,9 +39,9 @@ describe('Coffee Bean Supply Chain', () => {
         testLogger.logTestsStart();
 
         it('should correctly run harvestCoffee()', async () => {
-            const supplyChain = await SupplyChain.deployed()
+            const supplyChain = await SupplyChain.deployed();
         
-            let eventEmitted = false
+            let eventEmitted = false;
             
             await supplyChain.Harvested(() => {
                 eventEmitted = true;
@@ -53,6 +53,7 @@ describe('Coffee Bean Supply Chain', () => {
     
             assert.equal(resultCoffeeSupplyChain[0], sku, 'Error: Invalid item SKU');
             assert.equal(resultCoffeeSupplyChain[1], upc, 'Error: Invalid item UPC');
+            assert.equal(resultCoffeeSupplyChain[2], itemState, 'Error: Invalid itemState');
             assert.equal(resultCoffeeSupplyChain[3], originFarmerID, 'Error: Missing or Invalid ownerID');
             assert.equal(resultCoffeeSupplyChain[4], originFarmerID, 'Error: Missing or Invalid originFarmerID');
             assert.equal(resultCoffeeSupplyChain[5], originFarmName, 'Error: Missing or Invalid originFarmName');
@@ -60,6 +61,22 @@ describe('Coffee Bean Supply Chain', () => {
             assert.equal(resultCoffeeSupplyChain[7], originFarmLatitude, 'Error: Missing or Invalid originFarmLatitude');
             assert.equal(resultCoffeeSupplyChain[8], originFarmLongitude, 'Error: Missing or Invalid originFarmLongitude');
             assert.equal(eventEmitted, true, 'Invalid event emitted');      
+        });
+
+        it('should correctly run processCoffee()', async () => {
+            const supplyChain = await SupplyChain.deployed();
+
+            let eventEmitted = false;
+
+            await supplyChain.Processed(() => {
+                eventEmitted = true;
+            });
+
+            await supplyChain.processCoffee(upc, { from: originFarmerID });
+
+            const resultCoffeeSupplyChain = await supplyChain.fetchCoffee.call(upc);
+            assert.equal(Number(resultCoffeeSupplyChain[2]), itemState + 1, 'Error: Invalid item state');
+            assert.equal(eventEmitted, true, 'Invalid event emitted');
         });
     });
 });

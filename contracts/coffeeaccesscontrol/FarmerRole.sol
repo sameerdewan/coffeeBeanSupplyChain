@@ -16,7 +16,7 @@ contract FarmerRole {
     }
 
     modifier onlyFarmer() {
-        require(isFarmer(msg.sender), 'Error');
+        require(isFarmer(msg.sender), 'Error: not the farmer');
         _;
     }
 

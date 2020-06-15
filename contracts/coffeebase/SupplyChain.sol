@@ -140,7 +140,7 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
 
     function processCoffee(
         uint _upc
-    ) public harvested(_upc) verifyCaller(items[_upc].originFarmerID) onlyFarmer {
+    ) public harvested(_upc) verifyCaller(items[_upc].originFarmerID) {
         items[_upc].itemState = State.Processed;
         emit Processed(_upc);
     }
@@ -201,7 +201,7 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
     ) public view returns (
         uint itemSKU,
         uint itemUPC,
-        uint productPrice,
+        uint itemState,
         address ownerID,
         address originFarmerID,
         string memory originFarmName,
@@ -214,7 +214,7 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
 
         itemSKU = item.sku;
         itemUPC = item.upc;
-        productPrice = item.productPrice;
+        itemState = uint(item.itemState);
         ownerID = item.ownerID;
         originFarmerID = item.originFarmerID;
         originFarmName = item.originFarmName;
