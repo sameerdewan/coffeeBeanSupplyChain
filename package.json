@@ -6,7 +6,7 @@
     "test": "test"
   },
   "scripts": {
-    "ui": "echo \"Error: no script specified\" "
+    "ui": "cd client && npm start"
   },
   "author": "Sameer Dewan",
   "license": "ISC",
