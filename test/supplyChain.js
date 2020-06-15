@@ -37,5 +37,29 @@ describe('Coffee Bean Supply Chain', () => {
             productPrice
         });
         testLogger.logTestsStart();
+
+        it('should correctly run harvestCoffee()', async () => {
+            const supplyChain = await SupplyChain.deployed()
+        
+            let eventEmitted = false
+            
+            await supplyChain.Harvested(() => {
+                eventEmitted = true;
+            })
+    
+            await supplyChain.harvestCoffee(upc, originFarmerID, originFarmName, originFarmInformation, originFarmLatitude, originFarmLongitude, productNotes)
+    
+            const resultCoffeeSupplyChain = await supplyChain.fetchCoffee.call(upc)
+    
+            assert.equal(resultCoffeeSupplyChain[0], sku, 'Error: Invalid item SKU');
+            assert.equal(resultCoffeeSupplyChain[1], upc, 'Error: Invalid item UPC');
+            assert.equal(resultCoffeeSupplyChain[3], originFarmerID, 'Error: Missing or Invalid ownerID');
+            assert.equal(resultCoffeeSupplyChain[4], originFarmerID, 'Error: Missing or Invalid originFarmerID');
+            assert.equal(resultCoffeeSupplyChain[5], originFarmName, 'Error: Missing or Invalid originFarmName');
+            assert.equal(resultCoffeeSupplyChain[6], originFarmInformation, 'Error: Missing or Invalid originFarmInformation');
+            assert.equal(resultCoffeeSupplyChain[7], originFarmLatitude, 'Error: Missing or Invalid originFarmLatitude');
+            assert.equal(resultCoffeeSupplyChain[8], originFarmLongitude, 'Error: Missing or Invalid originFarmLongitude');
+            assert.equal(eventEmitted, true, 'Invalid event emitted');      
+        });
     });
 });
