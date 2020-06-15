@@ -195,11 +195,47 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
         emit Bought(_upc);
     }
 
-    function fetchCoffee() {
+    function fetchCoffee(
+        uint _upc
+    ) public view returns (
+        uint itemSKU,
+        uint itemUPC,
+        uint productPrice,
+        address ownerID,
+        address originFarmerID,
+        string memory originFarmName,
+        string memory originFarmInformation,
+        string memory originFarmLatitude,
+        string memory originFarmLongitude,
+        string memory productNotes
+    ) {
+        Item memory item = items[_upc];
 
+        itemSKU = item.sku;
+        itemUPC = item.upc;
+        productPrice = item.productPrice;
+        ownerID = item.ownerID;
+        originFarmerID = item.originFarmerID;
+        originFarmName = item.originFarmName;
+        originFarmInformation = item.originFarmInformation;
+        originFarmLatitude = item.originFarmLatitude;
+        originFarmLongitude = item.originFarmLongitude;
+        productNotes = item.productNotes;
     }
 
-    function fetchCoffeeHistory() {
+    function fetchCoffeeHistory(
+        uint _upc
+    ) public view returns (
+        address originFarmerID,
+        address distributorID,
+        address retailerID,
+        address consumerID
+    ) {
+        Item memory item = items[_upc];
 
+        originFarmerID = item.originFarmerID;
+        distributorID = item.distributorID;
+        retailerID = item.retailerID;
+        consumerID = item.consumerID;
     }
 }
