@@ -145,30 +145,6 @@ contract SupplyChain is Ownable, AccessControl {
         }
     }
 
-    function addFarmer(
-    address payable _address
-    ) public onlyDistributor(msg.sender) {
-        grantRole(FARMER_ROLE, _address);
-    }
-
-    function addDistributor(
-    address payable _address
-    ) public onlyFarmer(msg.sender) {
-        grantRole(DISTRIBUTOR_ROLE, _address);
-    }
-
-    function addRetailer(
-    address payable _address
-    ) public onlyDistributor(msg.sender) {
-        grantRole(RETAILER_ROLE, _address);
-    }
-
-    function addConsumer(
-    address payable _address
-    ) public onlyRetailer(msg.sender) {
-        grantRole(CONSUMER_ROLE, _address);
-    }
-
     function harvestCoffee(
     uint _upc,
     address payable _originFarmerId,
