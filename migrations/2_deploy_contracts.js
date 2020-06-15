@@ -1,4 +1,4 @@
-const SupplyChain = artifacts.require('../contracts/coffeebase/SupplyChain.sol');
+const SupplyChain = artifacts.require('../contracts/SupplyChain.sol');
 
 
 module.exports = function(deployer, _, accounts) {

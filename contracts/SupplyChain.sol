@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.6.0;
-import '../../node_modules/@openzeppelin/contracts/access/Ownable.sol';
-import '../../node_modules/@openzeppelin/contracts/access/AccessControl.sol';
+import '../node_modules/@openzeppelin/contracts/access/Ownable.sol';
+import '../node_modules/@openzeppelin/contracts/access/AccessControl.sol';
 
 
 contract SupplyChain is Ownable, AccessControl {
