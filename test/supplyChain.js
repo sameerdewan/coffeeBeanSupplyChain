@@ -20,7 +20,7 @@ describe('Coffee Bean Supply Chain', () => {
         const consumerID = accounts[4];
 
         const productNotes = 'Sameer Original Blend Coffee Beans';
-        const productPrice = web3.toWei(1, 'ether');
+        const productPrice = web3.utils.toWei('1', 'ether');
         let productID = sku + upc;
 
         const emptyAddress = '0x00000000000000000000000000000000000000';
