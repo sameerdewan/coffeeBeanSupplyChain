@@ -1,14 +1,16 @@
 const SupplyChain = artifacts.require('../contracts/coffeebase/SupplyChain.sol');
-
+const {TestLogger} = require('./utils');
 
 describe('Coffee Bean Supply Chain', () => {
     contract('SupplyChain', accounts => {
+        
+        const testLogger = new TestLogger(accounts);
 
         let sku = 1;
         let upc = 1;
         let itemState = 0;
 
-        const onwerID = accounts[0];
+        const ownerID = accounts[0];
         const originFarmerID = accounts[1];
         const originFarmName = `Sameer's Farm`;
         const originFarmInformation = 'Located in Los Angeles, California. The best coffee beans in the western hemisphere.';
@@ -25,6 +27,15 @@ describe('Coffee Bean Supply Chain', () => {
 
         const emptyAddress = '0x00000000000000000000000000000000000000';
 
-        it('logs', () => console.log(accounts));
+        testLogger.initialLog();
+        testLogger.logParams({
+            originFarmName, 
+            originFarmInformation, 
+            originFarmLatitude, 
+            originFarmLongitude, 
+            productNotes, 
+            productPrice
+        });
+        testLogger.logTestsStart();
     });
 });
