@@ -173,6 +173,40 @@ describe('Coffee Bean Supply Chain', () => {
             assert.equal(resultCoffeeSupplyChain[3], retailerID, 'Error: Missing or Invalid retailerID');
             assert.equal(eventEmitted, true, 'Invalid event emitted');
         });
+
+        it('should correctly run initializeSale()', async () => {
+            const supplyChain = await SupplyChain.deployed(originFarmerID, distributorID, retailerID);
+    
+            let eventEmitted = false;
+
+            await supplyChain.SaleInitialized(() => {
+                eventEmitted = true;
+            });
+
+            await supplyChain.initializeSale(upc, consumerID, { from: retailerID });
+
+            const resultCoffeeSupplyChain = await supplyChain.fetchCoffeeHistory.call(upc);
+            assert.equal(Number(resultCoffeeSupplyChain[5]), itemState + 7, 'Error: Invalid item state');
+            assert.equal(eventEmitted, true, 'Invalid event emitted');
+        });
+
+        it('should correctly run buyCoffee()', async () => {
+            const supplyChain = await SupplyChain.deployed(originFarmerID, distributorID, retailerID);
+    
+            let eventEmitted = false;
+
+            await supplyChain.Bought(() => {
+                eventEmitted = true;
+            });
+
+            await supplyChain.buyCoffee(upc, { from: consumerID });
+
+            const resultCoffeeSupplyChain = await supplyChain.fetchCoffeeHistory.call(upc);
+            assert.equal(Number(resultCoffeeSupplyChain[5]), itemState + 8, 'Error: Invalid item state');
+            assert.equal(resultCoffeeSupplyChain[0], consumerID, 'Error: Missing or Invalid ownerID');
+            assert.equal(resultCoffeeSupplyChain[4], consumerID, 'Error: Missing or Invalid consumerID');
+            assert.equal(eventEmitted, true, 'Invalid event emitted');
+        });
     });
 });
 
