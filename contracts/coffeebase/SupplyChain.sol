@@ -9,7 +9,7 @@ import '../coffeeaccesscontrol/ConsumerRole.sol';
 
 contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, ConsumerRole {
 
-    address payable owner;
+    address payable contractOwner;
     uint upc;
     uint sku;
 
@@ -104,14 +104,14 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
     }
 
     constructor() public payable {
-        owner = msg.sender;
+        contractOwner = msg.sender;
         sku = 1;
         upc = 1;
     }
 
     function kill() public {
-        if (msg.sender == owner) {
-            selfdestruct(owner);
+        if (msg.sender == contractOwner) {
+            selfdestruct(contractOwner);
         }
     }
 
@@ -162,7 +162,7 @@ contract SupplyChain is Ownable, FarmerRole, DistributorRole, RetailerRole, Cons
 
     function buyCoffeePalette(
         uint _upc
-    ) public addedToPalette(_upc) paidEnough(items[_upc].productPrice) refundExcess(_upc) onlyDistributor {
+    ) public payable addedToPalette(_upc) paidEnough(items[_upc].productPrice) refundExcess(_upc) onlyDistributor {
         items[_upc].ownerID = msg.sender;
         items[_upc].distributorID = msg.sender;
         items[_upc].itemState = State.Sold;
