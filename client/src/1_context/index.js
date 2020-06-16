@@ -13,7 +13,7 @@ export class ContextProvider extends React.Component {
             deployed: false
         };
         this.web3 = undefined;
-        this.accounts = undefined;
+        this.account = undefined;
         this.abi = supplyChainArtifact.abi;
     }
 
@@ -27,7 +27,7 @@ export class ContextProvider extends React.Component {
     async enableWeb3() {
         await window.ethereum.enable();
         const accounts = await this.web3.eth.getAccounts();
-        this.accounts = accounts;
+        this.account = accounts[0];
         this.setState({web3Enabled: true});
     }
 
@@ -39,10 +39,10 @@ export class ContextProvider extends React.Component {
         const state = this.state;
         const actions = this.actions;
         const web3 = this.web3;
-        const accounts = this.accounts;
+        const account = this.account;
         const abi = this.abi;
         return (
-            <Context.Provider value={{state, actions, web3, accounts, abi}}>
+            <Context.Provider value={{state, actions, web3, account, abi}}>
                 {this.props.children}
             </Context.Provider>
         )
