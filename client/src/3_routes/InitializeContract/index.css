@@ -1,0 +1,23 @@
+section.abi-container {
+    background-color: snow;
+}
+
+section.abi-container > pre {
+    color: deeppink;
+    font-weight: bold;
+    padding: 5px;
+}
+
+section.abi-label, section.initialize-contract-label, section.initialize-contract-container {
+    border-top: 1px solid deeppink;
+    border-left: 1px solid deeppink;
+    border-right: 1px solid deeppink;
+    padding: 10px;
+}
+
+section.initialize-contract-container, section.abi-container {
+    height: 70vh;
+    max-height: 70vh;
+    border: deeppink 1px solid;
+    overflow: scroll;
+}

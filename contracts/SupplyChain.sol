@@ -75,6 +75,14 @@ contract SupplyChain is Ownable, AccessControl {
         uint amountToReturn = msg.value - _price;
         items[_upc].consumerID.transfer(amountToReturn);
     }
+    modifier notContractOwner(address _address) {
+        require(contractOwner != _address, 'Error: Active chain participant cannot be contract owner');
+        _;
+    }
+    modifier onlyContractOwner(address _address) {
+        require(contractOwner == _address, 'Error: Not contract owner');
+        _;
+    }
     modifier onlyFarmer(address _address) {
         require(hasRole(FARMER_ROLE, _address), 'Error: Not a farmer');
         _;
@@ -128,7 +136,11 @@ contract SupplyChain is Ownable, AccessControl {
         _;
     }
 
-    constructor(address initialFarmer, address initialDistributor, address initialRetailer) public payable {
+    constructor(
+    address initialFarmer,
+    address initialDistributor,
+    address initialRetailer
+    ) public payable notContractOwner(initialFarmer) notContractOwner(initialDistributor) notContractOwner(initialRetailer) {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
         grantRole(FARMER_ROLE, initialFarmer);
         grantRole(DISTRIBUTOR_ROLE, initialDistributor);
@@ -143,6 +155,24 @@ contract SupplyChain is Ownable, AccessControl {
         if (msg.sender == contractOwner) {
             selfdestruct(contractOwner);
         }
+    }
+
+    function addFarmer(
+    address payable farmer
+    )  public onlyContractOwner(msg.sender) {
+        grantRole(FARMER_ROLE, farmer);
+    }
+
+    function addDistributor(
+    address payable distributor
+    ) public onlyContractOwner(msg.sender) {
+        grantRole(DISTRIBUTOR_ROLE, distributor);
+    }
+
+    function addRetailer(
+    address payable retailer
+    ) public onlyContractOwner(msg.sender) {
+        grantRole(RETAILER_ROLE, retailer);
     }
 
     function harvestCoffee(

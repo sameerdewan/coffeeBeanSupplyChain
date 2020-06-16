@@ -1,0 +1,13 @@
+/*LOADER STYLE*/
+div.loader {
+    min-width: 100vw;
+    min-height: 100vh;
+}
+
+div.loader > center > div.spinner-grow {
+    height: 300px;
+    width: 300px;
+    margin-top: 25vh;
+    margin-bottom: 25px;
+}
+
