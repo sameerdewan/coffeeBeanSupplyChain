@@ -2,6 +2,7 @@ import React from 'react';
 import {withRouter} from 'react-router-dom';
 import {withContext} from '../1_context';
 import Loader from './components/Loader';
+import Navigation from './components/Navigation';
 import Routes from '../3_routes';
 import './index.css';
 
@@ -11,7 +12,8 @@ function App(props) {
   }
   return (
     <div>
-      app is running...
+      <Navigation />
+      <br/><br/><br/>
       <Routes />
     </div>
   );

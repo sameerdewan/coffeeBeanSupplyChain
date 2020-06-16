@@ -11,8 +11,6 @@ export class ContextProvider extends React.Component {
         this.state = {
             web3Enabled: false,
             deployedAddress: null,
-            loading: false,
-            loadingMessage: 'Awaiting Metamask approval...'
         };
         this.web3 = undefined;
         this.account = undefined;
