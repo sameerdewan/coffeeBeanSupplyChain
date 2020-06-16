@@ -151,8 +151,12 @@ function DeployContract(props) {
                                 <span>Contract was successfully deployed at address: <b>{contract.options.address}</b></span>
                                 <br/><br/>
                                 <Alert.Link href="#" onClick={() => {
-                                    const savedContract = JSON.stringify(contract);
+                                    const savedContract = JSON.stringify({
+                                        abi: contract._jsonInterface,
+                                        address: contract._address
+                                    });
                                     window.localStorage.setItem('contract', savedContract);
+                                    alert('Contract saved to local storage!');
                                 }}>
                                     <i className="far fa-save"></i> Save Contract Istance
                                 </Alert.Link>

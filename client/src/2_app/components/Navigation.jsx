@@ -18,13 +18,6 @@ function Navigation(props) {
                     <NavDropdown.Item onClick={() => props.history.push('/manage')}>
                         <code><i className="fas fa-file-signature"></i> Manage a Contract</code>
                     </NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item onClick={() => props.history.push('/product')}>
-                        <code><i className="fas fa-search"></i> Search Product UPC</code>
-                    </NavDropdown.Item>
-                    <NavDropdown.Item onClick={() => props.history.push('/role')}>
-                        <code><i className="fas fa-users"></i> Search Account Role</code>
-                    </NavDropdown.Item>
                 </NavDropdown>
                 </Nav>
             </Navbar.Collapse>
