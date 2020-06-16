@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Route} from 'react-router-dom';
 import {Container, Row, Col, FormControl, Alert, Button} from 'react-bootstrap';
 import {withContext} from '../../1_context';
@@ -6,6 +6,20 @@ import './index.css';
 
 
 function InitializeContract(props) {
+    const [farmerID, setFarmerID] = useState(null);
+    const [distributorID, setDistributorID] = useState(null);
+    const [retailerID, setRetailerID] = useState(null);
+
+    const onSubmit = () => {
+        try {
+
+        } catch(error) {
+            alert('Error encountered. Check console for details.');
+            console.log({error});
+            console.error(error);
+        }
+    }
+
     return (
         <Route exact path={'/init'}>
             <Container>
@@ -37,7 +51,6 @@ function InitializeContract(props) {
                             <Alert variant={'primary'}>
                                 <Alert.Heading>Deploying a Contract</Alert.Heading>
                                 <hr/>
-                                <p>
                                     To deploy a supply chain contract, <u>you will need to access this page
                                     from the address intended to be the owner of the instance
                                     of the supply chain contract</u>. The owner cannot be the farmer, distributor,
@@ -92,7 +105,6 @@ function InitializeContract(props) {
                                     <hr/>
                                     A consumer is a unique role that can only be granted by a retailer on prompt of sale.
                                     The only action a consumer may take as a participant in the supply chain is <code>buying a product</code>.
-                                </p>
                                 <hr />
                                 <p className="mb-0">
                                     <i>
@@ -102,15 +114,24 @@ function InitializeContract(props) {
                                 </p>
                             </Alert>
                             <br/>
-                            <FormControl placeholder={'Enter originFarmerID (initialFarmer)'}/>
+                            <FormControl 
+                                placeholder={'Enter originFarmerID (initialFarmer)'} 
+                                onChange={e => setFarmerID(e.target.value)}
+                            />
                             <br/>
-                            <FormControl placeholder={'Enter distributorID (initialDistributor)'}/>
+                            <FormControl 
+                                placeholder={'Enter distributorID (initialDistributor)'}
+                                onChange={e => setDistributorID(e.target.value)}
+                            />
                             <br/>
-                            <FormControl placeholder={'Enter retailerID (initialRetailer)'}/>
+                            <FormControl 
+                                placeholder={'Enter retailerID (initialRetailer)'}
+                                onChange={e => setRetailerID(e.target.value)}
+                            />
                             <br />
                             <section className={'initialize-contract-button'}>
                                 <center>
-                                    <Button>
+                                    <Button onClick={() => onSubmit()}>
                                         Deploy Supply Chain Contract
                                     </Button>
                                 </center>
