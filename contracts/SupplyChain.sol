@@ -175,15 +175,14 @@ contract SupplyChain is Ownable, AccessControl {
         grantRole(RETAILER_ROLE, retailer);
     }
 
-    function getUserRole(
-    address payable _address
-    ) public view returns (
+    function getUserRole() public view returns (
         string memory
     ) {
-        if (hasRole(FARMER_ROLE, _address)) return 'farmer';
-        if (hasRole(DISTRIBUTOR_ROLE, _address)) return 'distributor';
-        if (hasRole(RETAILER_ROLE, _address)) return 'retailer';
-        if (hasRole(CONSUMER_ROLE, _address)) return 'consumer';
+        if (hasRole(FARMER_ROLE, msg.sender)) return 'farmer';
+        if (hasRole(DISTRIBUTOR_ROLE, msg.sender)) return 'distributor';
+        if (hasRole(RETAILER_ROLE, msg.sender)) return 'retailer';
+        if (hasRole(CONSUMER_ROLE, msg.sender)) return 'consumer';
+        if (contractOwner == msg.sender) return 'owner';
         return 'none';
     }
 
