@@ -13,6 +13,8 @@ function InitializeContract(props) {
     const [error, setError] = useState(false);
     const [address, setAddress] = useState(null);
     const [submitting, setSubmitting] = useState(false);
+    const [gas, setGas] = useState(null);
+    const [gasPrice, setGasPrice] = useState(null);
     
     const onSubmit = async () => {
         setSubmitting(true);
@@ -27,10 +29,11 @@ function InitializeContract(props) {
             })
             .send({
                 from: props.account,
-                gas: 5000000,
-                gasPrice: '90000000000'
+                gas: gas === null ? 5000000 : gas,
+                gasPrice: gasPrice === null ? '90000000000' : gasPrice
             })
             .then(newContractInstance => {
+                props.actions.setDeployedAddress(newContractInstance.options.address);
                 setAddress(newContractInstance.options.address);
                 setSuccess(true);
                 setSubmitting(false);
@@ -79,7 +82,8 @@ function InitializeContract(props) {
                                     or retailer. 
                                     <br/><br/>
                                     The supply chain contract must be initialized with one farmer, one distributor,
-                                    and one retailer.
+                                    and one retailer. <u>If the default gas and gas price values do not seem to work, adjust them. 
+                                    Otherwise, it is best not to touch those fields.</u>
                                     <br/><br/>
                                     The owner of this contract will be able to add farmers, distributors, and retailers
                                     to the smart contract instance, whom in turn may also participate in the deployed supply chain.
@@ -145,7 +149,11 @@ function InitializeContract(props) {
                             {
                                 success === true ? (
                                 <Alert variant={'success'}>
-                                    Contract was successfully deployed at address: <b>{address}</b>
+                                    <span>Contract was successfully deployed at address: <b>{address}</b></span>
+                                    <br/><br/>
+                                    <Alert.Link href="#" onClick={() => window.localStorage.setItem('address', address)}>
+                                        <i class="far fa-save"></i> Save Address to Local Storage for app usage
+                                    </Alert.Link>
                                 </Alert>) : ''
                             }
                             <FormControl 
@@ -162,11 +170,25 @@ function InitializeContract(props) {
                                 placeholder={'Enter retailerID (initialRetailer)'}
                                 onChange={e => setRetailerID(e.target.value)}
                             />
-                            <br />
+                            <br/>
+                            <hr/>
+                            <FormControl 
+                                placeholder={'**Optional** Gas (default 5000000)'}
+                                onChange={e => setGas(Number(e.target.value))}
+                            />
+                            <br/>
+                            <FormControl 
+                                placeholder={'**Optional** Gas Price (default 90000000000)'}
+                                onChange={e => setGasPrice(e.target.value)}
+                            />
+                            <br /><br/>
                             <section className={'initialize-contract-button'}>
                                 <center>
                                     <Button disabled={submitting} onClick={() => onSubmit()}>
-                                        {submitting ? <Spinner animation="border" variant="light" /> : 'Deploy Supply Chain Contract'}
+                                        {submitting ? 
+                                            <Spinner animation="border" variant="light" /> :
+                                            <span><i class="fas fa-file-export"></i> Deploy Contract</span>
+                                        }
                                     </Button>
                                 </center>
                             </section>
