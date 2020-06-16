@@ -142,33 +142,183 @@ function ManageContract(props) {
                                             </center>
                                             <br/>
                                         </Alert>
-                                    </React.Fragment> : ''
+                                    </React.Fragment> : role === 'farmer' ? 
+                                    <React.Fragment>
+                                        <Alert>
+                                            <center>
+                                                <Alert.Heading><i className="fas fa-tractor"></i> Farmer</Alert.Heading>
+                                                <br/><br/>
+                                                <FormControl placeholder={'Farm Name'}/>
+                                                <FormControl placeholder={'Farm Information'}/>
+                                                <FormControl placeholder={'Farm Latitude'}/>
+                                                <FormControl placeholder={'Farm Longitude'}/>
+                                                <FormControl placeholder={'Product Name'}/>
+                                                <Button><i className="fas fa-seedling"></i> Harvest</Button>
+                                                <br/><br/>
+                                                <InputGroup className="mb-3">
+                                                    <FormControl
+                                                    placeholder="UPC"
+                                                    onChange={e => {
+                                                    }}
+                                                    />
+                                                    <InputGroup.Append>
+                                                    <Button onClick={() => {
+                                                    
+                                                    }}><i className="fas fa-cogs"></i> Process</Button>
+                                                    </InputGroup.Append>
+                                                </InputGroup>
+                                                <br/>
+                                                <InputGroup className="mb-3">
+                                                    <FormControl
+                                                    placeholder="UPC"
+                                                    onChange={e => {
+                                                    }}
+                                                    />
+                                                    <InputGroup.Append>
+                                                    <Button onClick={() => {
+                                                    
+                                                    }}><i className="fas fa-box-open"></i> Pack</Button>
+                                                    </InputGroup.Append>
+                                                </InputGroup>
+                                                <br/>
+                                                <InputGroup className="mb-3">
+                                                    <FormControl
+                                                    placeholder="UPC"
+                                                    onChange={e => {
+                                                    }}
+                                                    />
+                                                    <InputGroup.Append>
+                                                    <Button onClick={() => {
+                                                    
+                                                    }}><i className="fas fa-pallet"></i> Add to Palette</Button>
+                                                    </InputGroup.Append>
+                                                </InputGroup>
+                                            </center>
+                                        </Alert>
+                                    </React.Fragment>
+                                    : role === 'distributor' ? 
+                                    <React.Fragment>
+                                        <Alert>
+                                            <center>
+                                                <Alert.Heading><i className="fas fa-industry"></i> Distributor</Alert.Heading>
+                                                <br/><br/>
+                                                <InputGroup className="mb-3">
+                                                    <FormControl
+                                                    placeholder="UPC"
+                                                    onChange={e => {
+                                                    }}
+                                                    />
+                                                    <InputGroup.Append>
+                                                    <Button onClick={() => {
+                                                    
+                                                    }}><i className="fas fa-truck-loading"></i> Buy Palette</Button>
+                                                    </InputGroup.Append>
+                                                </InputGroup>
+                                                <br/>
+                                                <InputGroup className="mb-3">
+                                                    <FormControl
+                                                    placeholder="UPC"
+                                                    onChange={e => {
+                                                    }}
+                                                    />
+                                                    <InputGroup.Append>
+                                                    <Button onClick={() => {
+                                                    
+                                                    }}><i className="fas fa-truck"></i> Ship Palette</Button>
+                                                    </InputGroup.Append>
+                                                </InputGroup>
+                                            </center>
+                                        </Alert>
+                                    </React.Fragment>
+                                    : role === 'retailer' ? 
+                                    <React.Fragment>
+                                        <Alert>
+                                            <center>
+                                                <Alert.Heading><i className="fas fa-store"></i> Retailer</Alert.Heading>
+                                            </center>
+                                            <br/><br/>
+                                            <InputGroup className="mb-3">
+                                                <FormControl
+                                                placeholder="UPC"
+                                                onChange={e => {
+                                                }}
+                                                />
+                                                <InputGroup.Append>
+                                                <Button onClick={() => {
+                                                
+                                                }}><i className="fas fa-boxes"></i> Receive Palette</Button>
+                                                </InputGroup.Append>
+                                            </InputGroup>
+                                            <br/>
+                                            <InputGroup className="mb-3">
+                                                <FormControl
+                                                placeholder="UPC"
+                                                onChange={e => {
+                                                }}
+                                                />
+                                                <FormControl
+                                                placeholder="Consumer ID"
+                                                onChange={e => {
+                                                }}
+                                                />
+                                                <InputGroup.Append>
+                                                <Button onClick={() => {
+                                                
+                                                }}><i className="fas fa-cash-register"></i> Initialize Sale</Button>
+                                                </InputGroup.Append>
+                                            </InputGroup>
+                                        </Alert>
+                                    </React.Fragment>
+                                    : role === 'consumer' ? 
+                                    <React.Fragment>
+                                        <Alert>
+                                            <center>
+                                                <Alert.Heading><i className="fas fa-user"></i> Consumer</Alert.Heading>
+                                            </center>
+                                            <br/><br/>
+                                            <InputGroup className="mb-3">
+                                                <FormControl
+                                                placeholder="UPC"
+                                                onChange={e => {
+                                                }}
+                                                />
+                                                <InputGroup.Append>
+                                                <Button onClick={() => {
+                                                
+                                                }}><i className="fas fa-hand-holding-usd"></i> Buy Product</Button>
+                                                </InputGroup.Append>
+                                            </InputGroup>
+                                        </Alert>
+                                    </React.Fragment>
+                                    :''
                                 }
-                                <InputGroup className="mb-3">
-                                    <FormControl
-                                    placeholder="UPC"
-                                    onChange={e => {
-                                    }}
-                                    />
-                                    <InputGroup.Append>
-                                    <Button variant={'primary'} onClick={() => {
-                                        
-                                    }}><i className="fas fa-undo"></i> Fetch Product</Button>
-                                    </InputGroup.Append>
-                                </InputGroup>
-                                <br/>
-                                <InputGroup className="mb-3">
-                                    <FormControl
-                                    placeholder="UPC"
-                                    onChange={e => {
-                                    }}
-                                    />
-                                    <InputGroup.Append>
-                                    <Button variant={'primary'} onClick={() => {
-                                        
-                                    }}><i className="fas fa-history"></i> Fetch Product History</Button>
-                                    </InputGroup.Append>
-                                </InputGroup>
+                                <Alert>
+                                    <InputGroup className="mb-3">
+                                        <FormControl
+                                        placeholder="UPC"
+                                        onChange={e => {
+                                        }}
+                                        />
+                                        <InputGroup.Append>
+                                        <Button variant={'primary'} onClick={() => {
+                                            
+                                        }}><i className="fas fa-undo"></i> Fetch Product</Button>
+                                        </InputGroup.Append>
+                                    </InputGroup>
+                                    <br/>
+                                    <InputGroup className="mb-3">
+                                        <FormControl
+                                        placeholder="UPC"
+                                        onChange={e => {
+                                        }}
+                                        />
+                                        <InputGroup.Append>
+                                        <Button variant={'primary'} onClick={() => {
+                                            
+                                        }}><i className="fas fa-history"></i> Fetch Product History</Button>
+                                        </InputGroup.Append>
+                                    </InputGroup>
+                                </Alert>
                             </React.Fragment> : usingSaved === true && role === null && workingContract === null ? 
                             <center><Spinner animation="border" variant="primary" /></center> : ''
                         }
