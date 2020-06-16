@@ -375,9 +375,7 @@ function ManageContract(props) {
                                                     <InputGroup.Append>
                                                     <Button onClick={async () => {
                                                         const values = await workingContract.methods.fetchProduct(buyPaletteUPC).call({from: props.account});
-                                                        console.log({values});
-                                                        return;
-                                                        workingContract.methods.buyPalette(buyPaletteUPC).send({from: props.account, value: props.web3.utils.fromWei(`${productPrice}`)})
+                                                        workingContract.methods.buyPalette(buyPaletteUPC).send({from: props.account, value: values[6]})
                                                         .on('transactionHash', function(hash){
                                                             console.log({hash})
                                                         })
@@ -509,9 +507,7 @@ function ManageContract(props) {
                                                 <InputGroup.Append>
                                                 <Button onClick={async () => {
                                                     const values = await workingContract.methods.fetchProduct(buyProductUPC);
-                                                    console.log({values})
-                                                    return;
-                                                    workingContract.methods.buy(buyProductUPC).send({from: props.account})
+                                                    workingContract.methods.buy(buyProductUPC).send({from: props.account, value: values[6]})
                                                     .on('transactionHash', function(hash){
                                                         console.log({hash})
                                                     })
