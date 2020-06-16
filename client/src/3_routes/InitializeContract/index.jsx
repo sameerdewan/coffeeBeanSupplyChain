@@ -112,7 +112,8 @@ function InitializeContract(props) {
                                     <code>processing</code>,&nbsp;
                                     <code>packing</code>,&nbsp;
                                     and <code>adding to a palette</code>. By adding a product to a palette,
-                                    the farmer is indicating the product's ability to be purchased by a distributor.
+                                    the farmer is indicating the product's ability to be purchased by a distributor, setting the
+                                    price while taking this action.
                                     <br/><br/>
                                     <h5>Distributor</h5>
                                     <hr/>

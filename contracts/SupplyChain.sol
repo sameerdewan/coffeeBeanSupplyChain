@@ -69,11 +69,11 @@ contract SupplyChain is Ownable, AccessControl {
         require(msg.value >= _price, 'Error: Not enough paid');
         _;
     }
-    modifier refundExcess(uint _upc) {
+    modifier refundExcess(uint _upc, address payable _address) {
         _;
         uint _price = items[_upc].productPrice;
         uint amountToReturn = msg.value - _price;
-        items[_upc].consumerID.transfer(amountToReturn);
+        _address.transfer(amountToReturn);
     }
     modifier notContractOwner(address _address) {
         require(contractOwner != _address, 'Error: Active chain participant cannot be contract owner');
@@ -234,7 +234,7 @@ contract SupplyChain is Ownable, AccessControl {
 
     function buyPalette(
     uint _upc
-    ) public payable onlyDistributor(msg.sender) addedToPalette(_upc) paidEnough(items[_upc].productPrice) refundExcess(_upc) {
+    ) public payable onlyDistributor(msg.sender) addedToPalette(_upc) paidEnough(items[_upc].productPrice) refundExcess(_upc, msg.sender) {
         items[_upc].ownerID = msg.sender;
         items[_upc].distributorID = msg.sender;
         items[_upc].itemState = State.Sold;
@@ -269,7 +269,7 @@ contract SupplyChain is Ownable, AccessControl {
 
     function buy(
     uint _upc
-    ) public onlyConsumer(msg.sender) saleInitialized(_upc) {
+    ) public payable onlyConsumer(msg.sender) saleInitialized(_upc) paidEnough(items[_upc].productPrice) refundExcess(_upc, msg.sender) {
         items[_upc].ownerID = msg.sender;
         items[_upc].consumerID = msg.sender;
         items[_upc].itemState = State.Bought;

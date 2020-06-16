@@ -199,7 +199,7 @@ describe('Coffee Bean Supply Chain', () => {
                 eventEmitted = true;
             });
 
-            await supplyChain.buy(upc, { from: consumerID });
+            await supplyChain.buy(upc, { from: consumerID, value: productPrice });
 
             const resultCoffeeSupplyChain = await supplyChain.fetchProductHistory.call(upc);
             assert.equal(Number(resultCoffeeSupplyChain[5]), itemState + 8, 'Error: Invalid item state');
