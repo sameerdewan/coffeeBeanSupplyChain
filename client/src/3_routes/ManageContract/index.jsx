@@ -36,6 +36,27 @@ function ManageContract(props) {
     const [packUPC, setPackUPC] = useState(null);
     // Add to Palette
     const [addToPaletteUPC, setAddToPaletteUPC] = useState(null);
+    const [productPrice, setProductPrice] = useState(null);
+
+    // DISTRIBUTOR
+    ///////////////////////////////////
+   // Buy Palette
+   const [buyPaletteUPC, setBuyPaletteUPC] = useState(null);
+   // Ship Palette
+   const [shipPaletteUPC, setShipPaletteUPC] = useState(null); 
+
+    // RETAILER
+    ///////////////////////////////////
+    // Receive Palette
+    const [receivePaletteUPC, setReceivePaletteUPC] = useState(null);
+    // Initialize Sale
+    const [initializeSaleUPC, setInitializeSaleUPC] = useState(null);
+    const [initializeSaleConsumerID, setInitializeSaleConsumerID] = useState(null);
+
+    // CONSUMER
+    ///////////////////////////////////
+    // Buy Product
+    const [buyProductUPC, setBuyProductUPC] = useState(null);
 
     useEffect(() => {
         const stored_contract = window.localStorage.getItem('contract');
@@ -258,9 +279,15 @@ function ManageContract(props) {
                                                         setAddToPaletteUPC(e.target.value);
                                                     }}
                                                     />
+                                                    <FormControl
+                                                    placeholder="Product Price"
+                                                    onChange={e => {
+                                                        setProductPrice(Number(e.target.value));
+                                                    }}
+                                                    />
                                                     <InputGroup.Append>
                                                     <Button onClick={() => {
-                                                        Promise.resolve(workingContract.methods.addToPalette(addToPaletteUPC).call({from: props.account}))
+                                                        Promise.resolve(workingContract.methods.addToPalette(addToPaletteUPC, productPrice).call({from: props.account}))
                                                             .then(() => {
                                                                 alert('Added to Palette!');
                                                             }).catch(error => {
@@ -283,11 +310,18 @@ function ManageContract(props) {
                                                     <FormControl
                                                     placeholder="UPC"
                                                     onChange={e => {
+                                                        setBuyPaletteUPC(e.target.value);
                                                     }}
                                                     />
                                                     <InputGroup.Append>
                                                     <Button onClick={() => {
-                                                    
+                                                        Promise.resolve(workingContract.methods.buyPalette(buyPaletteUPC).call({from: props.account, value: productPrice}))
+                                                            .then(() => {
+                                                                alert('Bought Palette!')
+                                                            }).catch(error => {
+                                                                setError(true);
+                                                                console.log({error});
+                                                            });
                                                     }}><i className="fas fa-truck-loading"></i> Buy Palette</Button>
                                                     </InputGroup.Append>
                                                 </InputGroup>
@@ -296,11 +330,18 @@ function ManageContract(props) {
                                                     <FormControl
                                                     placeholder="UPC"
                                                     onChange={e => {
+                                                        setShipPaletteUPC(e.target.value);
                                                     }}
                                                     />
                                                     <InputGroup.Append>
                                                     <Button onClick={() => {
-                                                    
+                                                        Promise.resolve(workingContract.methods.shipPalette(shipPaletteUPC).call({from: props.account}))
+                                                            .then(() => {
+                                                                alert('Shipped Palette!')
+                                                            }).catch(error => {
+                                                                setError(true);
+                                                                console.log({error});
+                                                            });
                                                     }}><i className="fas fa-truck"></i> Ship Palette</Button>
                                                     </InputGroup.Append>
                                                 </InputGroup>
@@ -318,11 +359,18 @@ function ManageContract(props) {
                                                 <FormControl
                                                 placeholder="UPC"
                                                 onChange={e => {
+                                                    setReceivePaletteUPC(e.target.value);
                                                 }}
                                                 />
                                                 <InputGroup.Append>
                                                 <Button onClick={() => {
-                                                
+                                                    Promise.resolve(workingContract.methods.receivePalette(receivePaletteUPC).call({from: props.account}))
+                                                        .then(() => {
+                                                            alert('Received!')
+                                                        }).catch(error => {
+                                                            setError(true);
+                                                            console.log({error});
+                                                        });
                                                 }}><i className="fas fa-boxes"></i> Receive Palette</Button>
                                                 </InputGroup.Append>
                                             </InputGroup>
@@ -331,16 +379,24 @@ function ManageContract(props) {
                                                 <FormControl
                                                 placeholder="UPC"
                                                 onChange={e => {
+                                                    setInitializeSaleUPC(e.target.value);
                                                 }}
                                                 />
                                                 <FormControl
                                                 placeholder="Consumer ID"
                                                 onChange={e => {
+                                                    setInitializeSaleConsumerID(e.target.value);
                                                 }}
                                                 />
                                                 <InputGroup.Append>
                                                 <Button onClick={() => {
-                                                
+                                                    Promise.resolve(workingContract.methods.initializeSale(initializeSaleUPC, initializeSaleConsumerID).call({from: props.account}))
+                                                        .then(() => {
+                                                            alert('Initialized Sale!')
+                                                        }).catch(error => {
+                                                            setError(true);
+                                                            console.log({error});
+                                                        });
                                                 }}><i className="fas fa-cash-register"></i> Initialize Sale</Button>
                                                 </InputGroup.Append>
                                             </InputGroup>
@@ -357,11 +413,18 @@ function ManageContract(props) {
                                                 <FormControl
                                                 placeholder="UPC"
                                                 onChange={e => {
+                                                    setBuyProductUPC(e.target.value);
                                                 }}
                                                 />
                                                 <InputGroup.Append>
                                                 <Button onClick={() => {
-                                                
+                                                    Promise.resolve(workingContract.methods.buy(buyProductUPC).call({from: props.account, value: productPrice}))
+                                                        .then(() => {
+                                                            alert('Bought!')
+                                                        }).catch(error => {
+                                                            setError(error);
+                                                            console.log({error});
+                                                        });
                                                 }}><i className="fas fa-hand-holding-usd"></i> Buy Product</Button>
                                                 </InputGroup.Append>
                                             </InputGroup>
