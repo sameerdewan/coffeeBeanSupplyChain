@@ -39,11 +39,11 @@ function InitializeContract(props) {
                                 <hr/>
                                 <p>
                                     To deploy a supply chain contract, <u>you will need to access this page
-                                    from the address intended to be the owner of this particular instance
-                                    of the supply chain contract</u>. The owner cannot be a farmer, distributor,
+                                    from the address intended to be the owner of the instance
+                                    of the supply chain contract</u>. The owner cannot be the farmer, distributor,
                                     or retailer. 
                                     <br/><br/>
-                                    The contract must be initialized with one farmer, one distributor,
+                                    The supply chain contract must be initialized with one farmer, one distributor,
                                     and one retailer.
                                     <br/><br/>
                                     The owner of this contract will be able to add farmers, distributors, and retailers
