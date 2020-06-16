@@ -11,3 +11,6 @@ div.loader > center > div.spinner-grow {
     margin-bottom: 25px;
 }
 
+code {
+    color: #004085 !important;
+}
