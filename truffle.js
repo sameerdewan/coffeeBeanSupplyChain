@@ -13,7 +13,7 @@ module.exports = {
         rinkeby: {
             provider: () => new HDWalletProvider(mnemonic, infuraKey),
             network_id: 4,
-            gas: 4500000,
+            gas: 8500000,
             gasPrice: 10000000000,
             type: 'quorum'
         }

@@ -100,9 +100,8 @@ function InitializeContract(props) {
                                     <br/><br/>
                                     <h5>Farmer</h5>
                                     <hr/>
-                                    A farmer has access the ability to harvest a product, 
-                                    kicing off the lifecycle of a product by assigning it the following attributes:
-                                    <code>originFarmName</code>,&nbsp;
+                                    A farmer has the ability to harvest a product, kicking off the lifecycle of a product by assigning it the following attributes:
+                                    &nbsp;<code>originFarmName</code>,&nbsp;
                                     <code>originFarmInformation</code>,&nbsp;
                                     <code>originFarmLatitude</code>,<br/>
                                      <code>originFarmLongitude</code>,&nbsp;
