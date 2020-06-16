@@ -6,7 +6,7 @@ import Routes from '../3_routes';
 import './index.css';
 
 function App(props) {
-  if (props.state.web3Enabled === false) {
+  if (props.state.web3Enabled === false || props.state.loading === true) {
     return <Loader />;
   }
   return (

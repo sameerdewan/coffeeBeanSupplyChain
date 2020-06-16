@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Route} from 'react-router-dom';
-import {Container, Row, Col, FormControl, Alert, Button} from 'react-bootstrap';
+import {Container, Row, Col, FormControl, Alert, Button, Spinner} from 'react-bootstrap';
 import {withContext} from '../../1_context';
 import './index.css';
 
@@ -9,14 +9,36 @@ function InitializeContract(props) {
     const [farmerID, setFarmerID] = useState(null);
     const [distributorID, setDistributorID] = useState(null);
     const [retailerID, setRetailerID] = useState(null);
-
-    const onSubmit = () => {
+    const [success, setSuccess] = useState(false);
+    const [error, setError] = useState(false);
+    const [address, setAddress] = useState(null);
+    const [submitting, setSubmitting] = useState(false);
+    
+    const onSubmit = async () => {
+        setSubmitting(true);
+        setSuccess(false);
+        setError(false);
+        setAddress(null);
         try {
-
+            const supplyChainContract = await new props.web3.eth.Contract(props.abi);
+            supplyChainContract.deploy({
+                arguments: [farmerID, distributorID, retailerID],
+                data: props.bytecode
+            })
+            .send({
+                from: props.account,
+                gas: 5000000,
+                gasPrice: '90000000000'
+            })
+            .then(newContractInstance => {
+                setAddress(newContractInstance.options.address);
+                setSuccess(true);
+                setSubmitting(false);
+            });
         } catch(error) {
-            alert('Error encountered. Check console for details.');
+            setError(true);
+            setSubmitting(false);
             console.log({error});
-            console.error(error);
         }
     }
 
@@ -114,6 +136,18 @@ function InitializeContract(props) {
                                 </p>
                             </Alert>
                             <br/>
+                            {
+                                error === true && success === false && 
+                                <Alert variant={'danger'}>
+                                    Error encountered. Check console for details.
+                                </Alert>
+                            }
+                            {
+                                success === true ? (
+                                <Alert variant={'success'}>
+                                    Contract was successfully deployed at address: <b>{address}</b>
+                                </Alert>) : ''
+                            }
                             <FormControl 
                                 placeholder={'Enter originFarmerID (initialFarmer)'} 
                                 onChange={e => setFarmerID(e.target.value)}
@@ -131,8 +165,8 @@ function InitializeContract(props) {
                             <br />
                             <section className={'initialize-contract-button'}>
                                 <center>
-                                    <Button onClick={() => onSubmit()}>
-                                        Deploy Supply Chain Contract
+                                    <Button disabled={submitting} onClick={() => onSubmit()}>
+                                        {submitting ? <Spinner animation="border" variant="light" /> : 'Deploy Supply Chain Contract'}
                                     </Button>
                                 </center>
                             </section>

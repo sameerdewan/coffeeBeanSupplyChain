@@ -10,11 +10,14 @@ export class ContextProvider extends React.Component {
         super(props);
         this.state = {
             web3Enabled: false,
-            deployed: false
+            deployed: false,
+            loading: false,
+            loadingMessage: 'Awaiting Metamask approval...'
         };
         this.web3 = undefined;
         this.account = undefined;
         this.abi = supplyChainArtifact.abi;
+        this.bytecode = supplyChainArtifact.bytecode;
     }
 
     componentDidMount() {
@@ -32,7 +35,6 @@ export class ContextProvider extends React.Component {
     }
 
     actions = {
-        
     }
 
     render() {
@@ -41,8 +43,9 @@ export class ContextProvider extends React.Component {
         const web3 = this.web3;
         const account = this.account;
         const abi = this.abi;
+        const bytecode = this.bytecode;
         return (
-            <Context.Provider value={{state, actions, web3, account, abi}}>
+            <Context.Provider value={{state, actions, web3, account, abi, bytecode, supplyChainArtifact}}>
                 {this.props.children}
             </Context.Provider>
         )
