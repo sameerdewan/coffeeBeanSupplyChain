@@ -184,6 +184,7 @@ contract SupplyChain is Ownable, AccessControl {
     }
 
     function harvest(
+    uint _upc,
     address payable _originFarmerId,
     string memory _originFarmName,
     string memory _originFarmInformation,
@@ -192,16 +193,16 @@ contract SupplyChain is Ownable, AccessControl {
     string  memory _productName
     ) public onlyFarmer(msg.sender) {
         items[keccak256(abi.encodePacked(sku))].sku = sku;
-        items[keccak256(abi.encodePacked(sku))].upc = keccak256(abi.encodePacked(sku));
-        items[keccak256(abi.encodePacked(sku))].originFarmerID = _originFarmerId;
-        items[keccak256(abi.encodePacked(sku))].originFarmName = _originFarmName;
-        items[keccak256(abi.encodePacked(sku))].originFarmInformation = _originFarmInformation;
-        items[keccak256(abi.encodePacked(sku))].originFarmLatitude = _originFarmLatitude;
-        items[keccak256(abi.encodePacked(sku))].originFarmLongitude = _originFarmLongitude;
-        items[keccak256(abi.encodePacked(sku))].productName = _productName;
-        items[keccak256(abi.encodePacked(sku))].ownerID = _originFarmerId;
-        items[keccak256(abi.encodePacked(sku))].itemState = State.Harvested;
-        emit Harvested(keccak256(abi.encodePacked(sku)));
+        items[keccak256(abi.encodePacked(_upc))].upc = keccak256(abi.encodePacked(sku));
+        items[keccak256(abi.encodePacked(_upc))].originFarmerID = _originFarmerId;
+        items[keccak256(abi.encodePacked(_upc))].originFarmName = _originFarmName;
+        items[keccak256(abi.encodePacked(_upc))].originFarmInformation = _originFarmInformation;
+        items[keccak256(abi.encodePacked(_upc))].originFarmLatitude = _originFarmLatitude;
+        items[keccak256(abi.encodePacked(_upc))].originFarmLongitude = _originFarmLongitude;
+        items[keccak256(abi.encodePacked(_upc))].productName = _productName;
+        items[keccak256(abi.encodePacked(_upc))].ownerID = _originFarmerId;
+        items[keccak256(abi.encodePacked(_upc))].itemState = State.Harvested;
+        emit Harvested(keccak256(abi.encodePacked(_upc)));
         sku = sku + 1;
     }
 

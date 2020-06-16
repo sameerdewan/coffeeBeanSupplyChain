@@ -23,10 +23,7 @@ describe('Coffee Bean Supply Chain', () => {
 
         const productName = 'Coffee';
         const productPrice = web3.utils.toWei('1', 'ether');
-        let productID = sku + upc;
-
-        const emptyAddress = '0x00000000000000000000000000000000000000';
-
+        
         testLogger.initialLog();
         testLogger.logParams({
             originFarmName, 
@@ -48,6 +45,7 @@ describe('Coffee Bean Supply Chain', () => {
             })
     
             await supplyChain.harvest(
+                upc, 
                 originFarmerID, 
                 originFarmName, 
                 originFarmInformation, 
