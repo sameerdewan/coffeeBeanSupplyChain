@@ -16,6 +16,7 @@ contract SupplyChain is Ownable, AccessControl {
     uint sku;
 
     mapping(bytes32 => Item) items;
+    mapping(bytes32 => Exist) exists;
     mapping(uint => string[]) itemHistory;
 
     enum State {
@@ -31,6 +32,10 @@ contract SupplyChain is Ownable, AccessControl {
     }
 
     State constant defaultState = State.Harvested;
+
+    struct Exist {
+        bytes32 upc;
+    }
 
     struct Item {
         uint    sku;  // Stock Keeping Unit (SKU)
@@ -192,6 +197,7 @@ contract SupplyChain is Ownable, AccessControl {
     string  memory _originFarmLongitude,
     string  memory _productName
     ) public onlyFarmer(msg.sender) {
+        require(exists[keccak256(abi.encodePacked(_upc))].upc != keccak256(abi.encodePacked(_upc)), 'Error: UPC Exists');
         items[keccak256(abi.encodePacked(sku))].sku = sku;
         items[keccak256(abi.encodePacked(_upc))].upc = keccak256(abi.encodePacked(sku));
         items[keccak256(abi.encodePacked(_upc))].originFarmerID = _originFarmerId;
@@ -202,6 +208,7 @@ contract SupplyChain is Ownable, AccessControl {
         items[keccak256(abi.encodePacked(_upc))].productName = _productName;
         items[keccak256(abi.encodePacked(_upc))].ownerID = _originFarmerId;
         items[keccak256(abi.encodePacked(_upc))].itemState = State.Harvested;
+        exists[keccak256(abi.encodePacked(_upc))].upc = keccak256(abi.encodePacked(_upc));
         emit Harvested(keccak256(abi.encodePacked(_upc)));
         sku = sku + 1;
     }
