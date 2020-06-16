@@ -59,6 +59,12 @@ function ManageContract(props) {
     // Buy Product
     const [buyProductUPC, setBuyProductUPC] = useState(null);
 
+    // PRODUCT DETAILS
+    const [fetchedDetailsUPC, setFetchedDetailsUPC] = useState(null);
+    const [fetchedDetails, setFetchedDetails] = useState(null);
+    const [fetchedHistoryUPC, setFetchedHistoryUPC] = useState(null);
+    const [fetchedHistory, setFetchedHistory] = useState(null);
+
     useEffect(() => {
         const stored_contract = window.localStorage.getItem('contract');
         if (stored_contract !== null) setContract(JSON.parse(stored_contract));
@@ -533,28 +539,37 @@ function ManageContract(props) {
                                         <FormControl
                                         placeholder="UPC"
                                         onChange={e => {
-
+                                            setFetchedDetailsUPC(e.target.value);
                                         }}
                                         />
                                         <InputGroup.Append>
-                                        <Button variant={'primary'} onClick={() => {
-                                            
+                                        <Button variant={'primary'} onClick={async () => {
+                                            const details = await workingContract.methods.fetchProduct(fetchedDetailsUPC).call({from: props.account});
+                                            setFetchedDetails(details);
                                         }}><i className="fas fa-undo"></i> Fetch Product</Button>
                                         </InputGroup.Append>
                                     </InputGroup>
+                                    {
+                                        fetchedDetails !== null ? <pre>{JSON.stringify(fetchedDetails, null, 2)}</pre> : ''
+                                    }
                                     <br/>
                                     <InputGroup className="mb-3">
                                         <FormControl
                                         placeholder="UPC"
                                         onChange={e => {
+                                            setFetchedHistoryUPC(e.target.value);
                                         }}
                                         />
                                         <InputGroup.Append>
-                                        <Button variant={'primary'} onClick={() => {
-                                            
+                                        <Button variant={'primary'} onClick={async () => {
+                                            const details = await workingContract.methods.fetchProductHistory(fetchedHistoryUPC).call({from: props.account});
+                                            setFetchedHistory(details);
                                         }}><i className="fas fa-history"></i> Fetch Product History</Button>
                                         </InputGroup.Append>
                                     </InputGroup>
+                                    {
+                                        fetchedHistory !== null ? <pre>{JSON.stringify(fetchedHistory, null, 2)}</pre> : ''
+                                    }
                                 </Alert>
                             </React.Fragment> : usingSaved === true && role === null && workingContract === null ? 
                             <center><Spinner animation="border" variant="primary" /></center> : ''
