@@ -28,3 +28,16 @@ code {
 .dropdown-divider {
     border-top: 1px solid #b8daff !important;
 }
+
+span.navbar-brand, span.navbar-brand > code{
+    cursor: pointer !important;
+}
+
+.dropdown-item:hover {
+    background-color: white !important;
+    border: 5px solid #b8daff !important;
+}
+
+.dropdown-item {
+    border: 5px solid white !important;
+}

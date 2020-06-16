@@ -20,10 +20,10 @@ function Navigation(props) {
                     </NavDropdown.Item>
                     <NavDropdown.Divider />
                     <NavDropdown.Item onClick={() => props.history.push('/product')}>
-                        <code><i class="fas fa-search"></i> View Product Details</code>
+                        <code><i class="fas fa-search"></i> Search Product UPC</code>
                     </NavDropdown.Item>
                     <NavDropdown.Item onClick={() => props.history.push('/role')}>
-                        <code><i class="fas fa-users"></i> View Account Role</code>
+                        <code><i class="fas fa-users"></i> Search Account Role</code>
                     </NavDropdown.Item>
                 </NavDropdown>
                 </Nav>
