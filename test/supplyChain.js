@@ -38,7 +38,7 @@ describe('Coffee Bean Supply Chain', () => {
         });
         testLogger.logTestsStart();
 
-        it('should correctly run harvestCoffee()', async () => {
+        it('should correctly run harvest()', async () => {
             const supplyChain = await SupplyChain.deployed(originFarmerID, distributorID, retailerID);
         
             let eventEmitted = false;
@@ -47,7 +47,7 @@ describe('Coffee Bean Supply Chain', () => {
                 eventEmitted = true;
             })
     
-            await supplyChain.harvestCoffee(
+            await supplyChain.harvest(
                 upc, 
                 originFarmerID, 
                 originFarmName, 
@@ -60,7 +60,7 @@ describe('Coffee Bean Supply Chain', () => {
                 }
             );
     
-            const resultCoffeeSupplyChain = await supplyChain.fetchCoffee.call(upc)
+            const resultCoffeeSupplyChain = await supplyChain.fetchProduct.call(upc)
     
             assert.equal(resultCoffeeSupplyChain[0], sku, 'Error: Invalid item SKU');
             assert.equal(resultCoffeeSupplyChain[1], upc, 'Error: Invalid item UPC');
@@ -74,7 +74,7 @@ describe('Coffee Bean Supply Chain', () => {
             assert.equal(eventEmitted, true, 'Invalid event emitted');      
         });
 
-        it('should correctly run processCoffee()', async () => {
+        it('should correctly run process()', async () => {
             const supplyChain = await SupplyChain.deployed(originFarmerID, distributorID, retailerID);
 
             let eventEmitted = false;
@@ -83,14 +83,14 @@ describe('Coffee Bean Supply Chain', () => {
                 eventEmitted = true;
             });
 
-            await supplyChain.processCoffee(upc, { from: originFarmerID });
+            await supplyChain.process(upc, { from: originFarmerID });
 
-            const resultCoffeeSupplyChain = await supplyChain.fetchCoffee.call(upc);
+            const resultCoffeeSupplyChain = await supplyChain.fetchProduct.call(upc);
             assert.equal(Number(resultCoffeeSupplyChain[2]), itemState + 1, 'Error: Invalid item state');
             assert.equal(eventEmitted, true, 'Invalid event emitted');
         });
 
-        it('should correctly run packCoffee()', async () => {
+        it('should correctly run pack()', async () => {
             const supplyChain = await SupplyChain.deployed(originFarmerID, distributorID, retailerID);
 
             let eventEmitted = false;
@@ -99,14 +99,14 @@ describe('Coffee Bean Supply Chain', () => {
                 eventEmitted = true;
             });
 
-            await supplyChain.packCoffee(upc, { from: originFarmerID });
+            await supplyChain.pack(upc, { from: originFarmerID });
 
-            const resultCoffeeSupplyChain = await supplyChain.fetchCoffee.call(upc);
+            const resultCoffeeSupplyChain = await supplyChain.fetchProduct.call(upc);
             assert.equal(Number(resultCoffeeSupplyChain[2]), itemState + 2, 'Error: Invalid item state');
             assert.equal(eventEmitted, true, 'Invalid event emitted');
         });
 
-        it('should correctly run addCoffeeToPalette()', async () => {
+        it('should correctly run addToPalette()', async () => {
             const supplyChain = await SupplyChain.deployed(originFarmerID, distributorID, retailerID);
 
             let eventEmitted = false;
@@ -115,14 +115,14 @@ describe('Coffee Bean Supply Chain', () => {
                 eventEmitted = true;
             });
 
-            await supplyChain.addCoffeeToPalette(upc, productPrice, { from: originFarmerID });
+            await supplyChain.addToPalette(upc, productPrice, { from: originFarmerID });
 
-            const resultCoffeeSupplyChain = await supplyChain.fetchCoffee.call(upc);
+            const resultCoffeeSupplyChain = await supplyChain.fetchProduct.call(upc);
             assert.equal(Number(resultCoffeeSupplyChain[2]), itemState + 3, 'Error: Invalid item state');
             assert.equal(eventEmitted, true, 'Invalid event emitted');
         });
 
-        it('should correctly run buyCoffeePalette()', async () => {
+        it('should correctly run buyPalette()', async () => {
             const supplyChain = await SupplyChain.deployed(originFarmerID, distributorID, retailerID);
 
             let eventEmitted = false;
@@ -131,16 +131,16 @@ describe('Coffee Bean Supply Chain', () => {
                 eventEmitted = true;
             });
 
-            await supplyChain.buyCoffeePalette(upc, { from: distributorID, value: productPrice });
+            await supplyChain.buyPalette(upc, { from: distributorID, value: productPrice });
 
-            const resultCoffeeSupplyChain = await supplyChain.fetchCoffee.call(upc);
+            const resultCoffeeSupplyChain = await supplyChain.fetchProduct.call(upc);
             assert.equal(Number(resultCoffeeSupplyChain[2]), itemState + 4, 'Error: Invalid item state');
             assert.equal(resultCoffeeSupplyChain[3], distributorID, 'Error: Missing or Invalid ownerID');
             assert.equal(resultCoffeeSupplyChain[3], distributorID, 'Error: Missing or Invalid distributorID');
             assert.equal(eventEmitted, true, 'Invalid event emitted');
         });
 
-        it('should correctly run shipCoffeePalette()', async () => {
+        it('should correctly run shipPalette()', async () => {
             const supplyChain = await SupplyChain.deployed(originFarmerID, distributorID, retailerID);
 
             let eventEmitted = false;
@@ -149,14 +149,14 @@ describe('Coffee Bean Supply Chain', () => {
                 eventEmitted = true;
             });
 
-            await supplyChain.shipCoffeePalette(upc, { from: distributorID });
+            await supplyChain.shipPalette(upc, { from: distributorID });
 
-            const resultCoffeeSupplyChain = await supplyChain.fetchCoffee.call(upc);
+            const resultCoffeeSupplyChain = await supplyChain.fetchProduct.call(upc);
             assert.equal(Number(resultCoffeeSupplyChain[2]), itemState + 5, 'Error: Invalid item state');
             assert.equal(eventEmitted, true, 'Invalid event emitted');
         });
 
-        it('should correctly run receiveCoffeePalette()', async () => {
+        it('should correctly run receivePalette()', async () => {
             const supplyChain = await SupplyChain.deployed(originFarmerID, distributorID, retailerID);
     
             let eventEmitted = false;
@@ -165,9 +165,9 @@ describe('Coffee Bean Supply Chain', () => {
                 eventEmitted = true;
             });
 
-            await supplyChain.receiveCoffeePalette(upc, { from: retailerID });
+            await supplyChain.receivePalette(upc, { from: retailerID });
 
-            const resultCoffeeSupplyChain = await supplyChain.fetchCoffeeHistory.call(upc);
+            const resultCoffeeSupplyChain = await supplyChain.fetchProductHistory.call(upc);
             assert.equal(Number(resultCoffeeSupplyChain[5]), itemState + 6, 'Error: Invalid item state');
             assert.equal(resultCoffeeSupplyChain[0], retailerID, 'Error: Missing or Invalid ownerID');
             assert.equal(resultCoffeeSupplyChain[3], retailerID, 'Error: Missing or Invalid retailerID');
@@ -185,12 +185,12 @@ describe('Coffee Bean Supply Chain', () => {
 
             await supplyChain.initializeSale(upc, consumerID, { from: retailerID });
 
-            const resultCoffeeSupplyChain = await supplyChain.fetchCoffeeHistory.call(upc);
+            const resultCoffeeSupplyChain = await supplyChain.fetchProductHistory.call(upc);
             assert.equal(Number(resultCoffeeSupplyChain[5]), itemState + 7, 'Error: Invalid item state');
             assert.equal(eventEmitted, true, 'Invalid event emitted');
         });
 
-        it('should correctly run buyCoffee()', async () => {
+        it('should correctly run buy()', async () => {
             const supplyChain = await SupplyChain.deployed(originFarmerID, distributorID, retailerID);
     
             let eventEmitted = false;
@@ -199,19 +199,19 @@ describe('Coffee Bean Supply Chain', () => {
                 eventEmitted = true;
             });
 
-            await supplyChain.buyCoffee(upc, { from: consumerID });
+            await supplyChain.buy(upc, { from: consumerID });
 
-            const resultCoffeeSupplyChain = await supplyChain.fetchCoffeeHistory.call(upc);
+            const resultCoffeeSupplyChain = await supplyChain.fetchProductHistory.call(upc);
             assert.equal(Number(resultCoffeeSupplyChain[5]), itemState + 8, 'Error: Invalid item state');
             assert.equal(resultCoffeeSupplyChain[0], consumerID, 'Error: Missing or Invalid ownerID');
             assert.equal(resultCoffeeSupplyChain[4], consumerID, 'Error: Missing or Invalid consumerID');
             assert.equal(eventEmitted, true, 'Invalid event emitted');
         });
 
-        it('should correctly run fetchCoffee()', async () => {
+        it('should correctly run fetchProduct()', async () => {
             const supplyChain = await SupplyChain.deployed(originFarmerID, distributorID, retailerID);
             
-            const resultCoffeeSupplyChain = await supplyChain.fetchCoffee.call(upc);
+            const resultCoffeeSupplyChain = await supplyChain.fetchProduct.call(upc);
             assert.equal(resultCoffeeSupplyChain[0], sku, 'Error: Invalid item SKU');
             assert.equal(resultCoffeeSupplyChain[1], upc, 'Error: Invalid item UPC');
             assert.equal(Number(resultCoffeeSupplyChain[2]), itemState + 8, 'Error: Invalid itemState');
@@ -224,10 +224,10 @@ describe('Coffee Bean Supply Chain', () => {
             assert.equal(resultCoffeeSupplyChain[9], productNotes, 'Error: Missing or Invalid productNotes');   
         });
 
-        it('should correctly run fetchCoffeeHistory()', async () => {
+        it('should correctly run fetchProductHistory()', async () => {
             const supplyChain = await SupplyChain.deployed(originFarmerID, distributorID, retailerID);
             
-            const resultCoffeeSupplyChain = await supplyChain.fetchCoffeeHistory.call(upc);
+            const resultCoffeeSupplyChain = await supplyChain.fetchProductHistory.call(upc);
             assert.equal(resultCoffeeSupplyChain[0], consumerID, 'Error: Missing or Invalid ownerID');
             assert.equal(resultCoffeeSupplyChain[1], originFarmerID, 'Error: Missing or Invalid originFarmerID');
             assert.equal(resultCoffeeSupplyChain[2], distributorID, 'Error: Missing or Invalid distributorID');
