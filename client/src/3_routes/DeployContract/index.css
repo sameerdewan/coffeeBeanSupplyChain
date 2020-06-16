@@ -10,10 +10,11 @@ section.abi-container > pre {
 }
 
 section.abi-label, section.initialize-contract-label {
-    border-top: 1px solid #b8daff;;
-    border-left: 1px solid #b8daff;;
-    border-right: 1px solid #b8daff;;
+    border-top: 1px solid #b8daff;
+    border-left: 1px solid #b8daff;
+    border-right: 1px solid #b8daff;
     padding: 10px;
+    background-color: white;
 }
 
 section.initialize-contract-container, section.abi-container {
@@ -24,6 +25,7 @@ section.initialize-contract-container, section.abi-container {
 section.initialize-contract-container {
     height: fit-content;
     margin-bottom: 100px;
+    background-color: white;
 }
 
 section.abi-container {
@@ -38,4 +40,8 @@ section.initialize-contract-container {
 
 section.initialize-contract-button {
     padding-bottom: 25px;
+}
+
+.particles-js-canvas-el {
+    position: fixed;
 }

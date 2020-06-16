@@ -1,12 +1,18 @@
 import React from 'react';
-import {Switch} from 'react-router-dom';
-import InitializeContract from './InitializeContract';
+import {Switch, Route} from 'react-router-dom';
+import DeployContract from './DeployContract';
+import ManageContract from './ManageContract';
 
 
 function Routes() {
     return (
         <Switch>
-            <InitializeContract />
+            <Route exact path={'/deploy'}>
+                <DeployContract />
+            </Route>
+            <Route exact path={'/manage'}>
+                <ManageContract />
+            </Route>
         </Switch>
     )
 }
