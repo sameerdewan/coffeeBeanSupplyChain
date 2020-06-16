@@ -136,13 +136,20 @@ function ManageContract(props) {
                                                 />
                                                 <InputGroup.Append>
                                                 <Button variant={'success'} onClick={() => {
-                                                   Promise.resolve(workingContract.methods.addFarmer(farmerAddress).call({from: props.account}))
-                                                        .then(() => {
-                                                            alert('Farmer Added')
-                                                        }).catch(error => {
-                                                            setError(true);
-                                                            console.log({error});
-                                                        });
+                                                   workingContract.methods.addFarmer(farmerAddress).send({from: props.account})
+                                                   .on('transactionHash', function(hash){
+                                                       console.log({hash})
+                                                   })
+                                                   .on('receipt', function(receipt){
+                                                       console.log({receipt})
+                                                   })
+                                                   .on('confirmation', function(confirmationNumber, receipt){
+                                                       console.log({confirmationNumber});
+                                                   })
+                                                   .on('error', (error) => {
+                                                       setError(true);
+                                                       console.log({error});
+                                                   });
                                                 }}><i className="fas fa-plus"></i> Add Farmer</Button>
                                                 </InputGroup.Append>
                                             </InputGroup>
@@ -156,13 +163,20 @@ function ManageContract(props) {
                                                 />
                                                 <InputGroup.Append>
                                                 <Button variant={'success'} onClick={() => {
-                                                    Promise.resolve(workingContract.methods.addDistributor(distributorAddress).call({from: props.account}))
-                                                        .then(() => {
-                                                            alert('Distributor Added')
-                                                        }).catch(error => {
-                                                            setError(true);
-                                                            console.log({error});
-                                                        });
+                                                    workingContract.methods.addDistributor(distributorAddress).send({from: props.account})
+                                                    .on('transactionHash', function(hash){
+                                                        console.log({hash})
+                                                    })
+                                                    .on('receipt', function(receipt){
+                                                        console.log({receipt})
+                                                    })
+                                                    .on('confirmation', function(confirmationNumber, receipt){
+                                                        console.log({confirmationNumber});
+                                                    })
+                                                    .on('error', (error) => {
+                                                        setError(true);
+                                                        console.log({error});
+                                                    });
                                                 }}><i className="fas fa-plus"></i> Add Distributor</Button>
                                                 </InputGroup.Append>
                                             </InputGroup>
@@ -176,26 +190,40 @@ function ManageContract(props) {
                                                 />
                                                 <InputGroup.Append>
                                                 <Button variant={'success'} onClick={() => {
-                                                    Promise.resolve(workingContract.methods.addRetailer(retailerAddress).call({from: props.account}))
-                                                        .then(() => {
-                                                            alert('Retailer Added')
-                                                        }).catch(error => {
-                                                            setError(true);
-                                                            console.log({error});
-                                                        });
+                                                    workingContract.methods.addRetailer(retailerAddress).send({from: props.account})
+                                                    .on('transactionHash', function(hash){
+                                                        console.log({hash})
+                                                    })
+                                                    .on('receipt', function(receipt){
+                                                        console.log({receipt})
+                                                    })
+                                                    .on('confirmation', function(confirmationNumber, receipt){
+                                                        console.log({confirmationNumber});
+                                                    })
+                                                    .on('error', (error) => {
+                                                        setError(true);
+                                                        console.log({error});
+                                                    });
                                                 }}><i className="fas fa-plus"></i> Add Retailer</Button>
                                                 </InputGroup.Append>
                                             </InputGroup>
                                             <br/>
                                             <center>
                                                 <Button variant={'danger'} onClick={() => {
-                                                    Promise.resolve(workingContract.methods.kill().call({from: props.account}))
-                                                        .then(() => {
-                                                            alert('Contract destroyed')
-                                                        }).catch(error => {
-                                                            setError(true);
-                                                            console.log({error});
-                                                        });
+                                                    workingContract.methods.kill().send({from: props.account})
+                                                    .on('transactionHash', function(hash){
+                                                        console.log({hash})
+                                                    })
+                                                    .on('receipt', function(receipt){
+                                                        console.log({receipt})
+                                                    })
+                                                    .on('confirmation', function(confirmationNumber, receipt){
+                                                        console.log({confirmationNumber});
+                                                    })
+                                                    .on('error', (error) => {
+                                                        setError(true);
+                                                        console.log({error});
+                                                    });
                                                 }}>
                                                     <i className="fas fa-skull-crossbones"></i> Kill Contract
                                                 </Button>
@@ -215,20 +243,27 @@ function ManageContract(props) {
                                                 <FormControl placeholder={'Product Name'} onChange={e => setProductName(e.target.value)}/>
                                                 <Button
                                                     onClick={() => {
-                                                        Promise.resolve(workingContract.methods.harvest(
+                                                        workingContract.methods.harvest(
                                                             props.account,
                                                             farmName,
                                                             farmInformation,
                                                             farmLatitude,
                                                             farmLongitude,
                                                             productName
-                                                        ).call({from: props.account}))
-                                                            .then(() => {
-                                                                alert('Harvested!')
-                                                            }).catch(error => {
-                                                                setError(true);
-                                                                console.log({error});
-                                                            });
+                                                        ).send({from: props.account})
+                                                        .on('transactionHash', function(hash){
+                                                            console.log({hash})
+                                                        })
+                                                        .on('receipt', function(receipt){
+                                                            console.log({receipt})
+                                                        })
+                                                        .on('confirmation', function(confirmationNumber, receipt){
+                                                            console.log({confirmationNumber});
+                                                        })
+                                                        .on('error', (error) => {
+                                                            setError(true);
+                                                            console.log({error});
+                                                        });
                                                     }}
                                                 ><i className="fas fa-seedling"></i> Harvest</Button>
                                                 <br/><br/>
@@ -241,13 +276,20 @@ function ManageContract(props) {
                                                     />
                                                     <InputGroup.Append>
                                                     <Button onClick={() => {
-                                                        Promise.resolve(workingContract.methods.process(processUPC).call({from: props.account}))
-                                                            .then(() => {
-                                                                alert('Processed!')
-                                                            }).catch(error => {
-                                                                setError(true);
-                                                                console.log({error});
-                                                            });
+                                                        workingContract.methods.process(processUPC).send({from: props.account})
+                                                        .on('transactionHash', function(hash){
+                                                            console.log({hash})
+                                                        })
+                                                        .on('receipt', function(receipt){
+                                                            console.log({receipt})
+                                                        })
+                                                        .on('confirmation', function(confirmationNumber, receipt){
+                                                            console.log({confirmationNumber});
+                                                        })
+                                                        .on('error', (error) => {
+                                                            setError(true);
+                                                            console.log({error});
+                                                        });
                                                     }}><i className="fas fa-cogs"></i> Process</Button>
                                                     </InputGroup.Append>
                                                 </InputGroup>
@@ -261,13 +303,20 @@ function ManageContract(props) {
                                                     />
                                                     <InputGroup.Append>
                                                     <Button onClick={() => {
-                                                        Promise.resolve(workingContract.methods.pack(packUPC).call({from: props.account}))
-                                                            .then(() => {
-                                                                alert('Packed!')
-                                                            }).catch(error => {
-                                                                setError(true);
-                                                                console.log({error});
-                                                            });
+                                                        workingContract.methods.pack(packUPC).send({from: props.account})
+                                                        .on('transactionHash', function(hash){
+                                                            console.log({hash})
+                                                        })
+                                                        .on('receipt', function(receipt){
+                                                            console.log({receipt})
+                                                        })
+                                                        .on('confirmation', function(confirmationNumber, receipt){
+                                                            console.log({confirmationNumber});
+                                                        })
+                                                        .on('error', (error) => {
+                                                            setError(true);
+                                                            console.log({error});
+                                                        });
                                                     }}><i className="fas fa-box-open"></i> Pack</Button>
                                                     </InputGroup.Append>
                                                 </InputGroup>
@@ -287,13 +336,20 @@ function ManageContract(props) {
                                                     />
                                                     <InputGroup.Append>
                                                     <Button onClick={() => {
-                                                        Promise.resolve(workingContract.methods.addToPalette(addToPaletteUPC, productPrice).call({from: props.account}))
-                                                            .then(() => {
-                                                                alert('Added to Palette!');
-                                                            }).catch(error => {
-                                                                setError(true);
-                                                                console.log({error});
-                                                            });
+                                                        Promise.resolve(workingContract.methods.addToPalette(addToPaletteUPC, productPrice).send({from: props.account})
+                                                        .on('transactionHash', function(hash){
+                                                            console.log({hash})
+                                                        })
+                                                        .on('receipt', function(receipt){
+                                                            console.log({receipt})
+                                                        })
+                                                        .on('confirmation', function(confirmationNumber, receipt){
+                                                            console.log({confirmationNumber});
+                                                        })
+                                                        .on('error', (error) => {
+                                                            setError(true);
+                                                            console.log({error});
+                                                        }));
                                                     }}><i className="fas fa-pallet"></i> Add to Palette</Button>
                                                     </InputGroup.Append>
                                                 </InputGroup>
@@ -315,13 +371,20 @@ function ManageContract(props) {
                                                     />
                                                     <InputGroup.Append>
                                                     <Button onClick={() => {
-                                                        Promise.resolve(workingContract.methods.buyPalette(buyPaletteUPC).call({from: props.account, value: productPrice}))
-                                                            .then(() => {
-                                                                alert('Bought Palette!')
-                                                            }).catch(error => {
-                                                                setError(true);
-                                                                console.log({error});
-                                                            });
+                                                        workingContract.methods.buyPalette(buyPaletteUPC).send({from: props.account, value: productPrice})
+                                                        .on('transactionHash', function(hash){
+                                                            console.log({hash})
+                                                        })
+                                                        .on('receipt', function(receipt){
+                                                            console.log({receipt})
+                                                        })
+                                                        .on('confirmation', function(confirmationNumber, receipt){
+                                                            console.log({confirmationNumber});
+                                                        })
+                                                        .on('error', (error) => {
+                                                            setError(true);
+                                                            console.log({error});
+                                                        });
                                                     }}><i className="fas fa-truck-loading"></i> Buy Palette</Button>
                                                     </InputGroup.Append>
                                                 </InputGroup>
@@ -335,13 +398,20 @@ function ManageContract(props) {
                                                     />
                                                     <InputGroup.Append>
                                                     <Button onClick={() => {
-                                                        Promise.resolve(workingContract.methods.shipPalette(shipPaletteUPC).call({from: props.account}))
-                                                            .then(() => {
-                                                                alert('Shipped Palette!')
-                                                            }).catch(error => {
-                                                                setError(true);
-                                                                console.log({error});
-                                                            });
+                                                        workingContract.methods.shipPalette(shipPaletteUPC).send({from: props.account})
+                                                        .on('transactionHash', function(hash){
+                                                            console.log({hash})
+                                                        })
+                                                        .on('receipt', function(receipt){
+                                                            console.log({receipt})
+                                                        })
+                                                        .on('confirmation', function(confirmationNumber, receipt){
+                                                            console.log({confirmationNumber});
+                                                        })
+                                                        .on('error', (error) => {
+                                                            setError(true);
+                                                            console.log({error});
+                                                        });
                                                     }}><i className="fas fa-truck"></i> Ship Palette</Button>
                                                     </InputGroup.Append>
                                                 </InputGroup>
@@ -364,13 +434,20 @@ function ManageContract(props) {
                                                 />
                                                 <InputGroup.Append>
                                                 <Button onClick={() => {
-                                                    Promise.resolve(workingContract.methods.receivePalette(receivePaletteUPC).call({from: props.account}))
-                                                        .then(() => {
-                                                            alert('Received!')
-                                                        }).catch(error => {
-                                                            setError(true);
-                                                            console.log({error});
-                                                        });
+                                                    workingContract.methods.receivePalette(receivePaletteUPC).send({from: props.account})
+                                                    .on('transactionHash', function(hash){
+                                                        console.log({hash})
+                                                    })
+                                                    .on('receipt', function(receipt){
+                                                        console.log({receipt})
+                                                    })
+                                                    .on('confirmation', function(confirmationNumber, receipt){
+                                                        console.log({confirmationNumber});
+                                                    })
+                                                    .on('error', (error) => {
+                                                        setError(true);
+                                                        console.log({error});
+                                                    });
                                                 }}><i className="fas fa-boxes"></i> Receive Palette</Button>
                                                 </InputGroup.Append>
                                             </InputGroup>
@@ -390,13 +467,20 @@ function ManageContract(props) {
                                                 />
                                                 <InputGroup.Append>
                                                 <Button onClick={() => {
-                                                    Promise.resolve(workingContract.methods.initializeSale(initializeSaleUPC, initializeSaleConsumerID).call({from: props.account}))
-                                                        .then(() => {
-                                                            alert('Initialized Sale!')
-                                                        }).catch(error => {
-                                                            setError(true);
-                                                            console.log({error});
-                                                        });
+                                                    Promise.resolve(workingContract.methods.initializeSale(initializeSaleUPC, initializeSaleConsumerID).send({from: props.account})
+                                                    .on('transactionHash', function(hash){
+                                                        console.log({hash})
+                                                    })
+                                                    .on('receipt', function(receipt){
+                                                        console.log({receipt})
+                                                    })
+                                                    .on('confirmation', function(confirmationNumber, receipt){
+                                                        console.log({confirmationNumber});
+                                                    })
+                                                    .on('error', (error) => {
+                                                        setError(true);
+                                                        console.log({error});
+                                                    }));
                                                 }}><i className="fas fa-cash-register"></i> Initialize Sale</Button>
                                                 </InputGroup.Append>
                                             </InputGroup>
@@ -418,13 +502,20 @@ function ManageContract(props) {
                                                 />
                                                 <InputGroup.Append>
                                                 <Button onClick={() => {
-                                                    Promise.resolve(workingContract.methods.buy(buyProductUPC).call({from: props.account, value: productPrice}))
-                                                        .then(() => {
-                                                            alert('Bought!')
-                                                        }).catch(error => {
-                                                            setError(error);
-                                                            console.log({error});
-                                                        });
+                                                    workingContract.methods.buy(buyProductUPC).send({from: props.account})
+                                                    .on('transactionHash', function(hash){
+                                                        console.log({hash})
+                                                    })
+                                                    .on('receipt', function(receipt){
+                                                        console.log({receipt})
+                                                    })
+                                                    .on('confirmation', function(confirmationNumber, receipt){
+                                                        console.log({confirmationNumber});
+                                                    })
+                                                    .on('error', (error) => {
+                                                        setError(true);
+                                                        console.log({error});
+                                                    });
                                                 }}><i className="fas fa-hand-holding-usd"></i> Buy Product</Button>
                                                 </InputGroup.Append>
                                             </InputGroup>
