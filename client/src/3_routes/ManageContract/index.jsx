@@ -371,7 +371,7 @@ function ManageContract(props) {
                                                     />
                                                     <InputGroup.Append>
                                                     <Button onClick={() => {
-                                                        workingContract.methods.buyPalette(buyPaletteUPC).send({from: props.account, value: productPrice})
+                                                        workingContract.methods.buyPalette(buyPaletteUPC).send({from: props.account, value: props.web3.utils.fromWei(`${productPrice}`)})
                                                         .on('transactionHash', function(hash){
                                                             console.log({hash})
                                                         })
