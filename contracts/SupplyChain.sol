@@ -318,7 +318,8 @@ contract SupplyChain is Ownable, AccessControl {
     address distributorID,
     address retailerID,
     address consumerID,
-    uint itemState
+    uint itemState,
+    uint productPrice
     ) {
         Item memory item = items[keccak256(abi.encodePacked(_upc))];
 
@@ -328,5 +329,6 @@ contract SupplyChain is Ownable, AccessControl {
         retailerID = item.retailerID;
         consumerID = item.consumerID;
         itemState = uint(item.itemState);
+        productPrice = item.productPrice;
     }
 }

@@ -22,8 +22,8 @@ describe('Coffee Bean Supply Chain', () => {
         const consumerID = accounts[4];
 
         const productName = 'Coffee';
-        const productPrice = web3.utils.toWei('1', 'ether');
-        
+        const productPrice = 1;
+
         testLogger.initialLog();
         testLogger.logParams({
             originFarmName, 
@@ -231,6 +231,7 @@ describe('Coffee Bean Supply Chain', () => {
             assert.equal(resultCoffeeSupplyChain[3], retailerID, 'Error: Missing or Invalid retailerID');
             assert.equal(resultCoffeeSupplyChain[4], consumerID, 'Error: Missing or Invalid consumerID');
             assert.equal(Number(resultCoffeeSupplyChain[5]), itemState + 8, 'Error: Invalid itemState');
+            assert.equal(Number(resultCoffeeSupplyChain[6]), productPrice, 'Error: Missing or Invalid productPrice');
         });
     });
 });
