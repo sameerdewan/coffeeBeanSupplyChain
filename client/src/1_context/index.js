@@ -10,7 +10,6 @@ export class ContextProvider extends React.Component {
         super(props);
         this.state = {
             web3Enabled: false,
-            deployedAddress: null,
         };
         this.web3 = undefined;
         this.account = undefined;
@@ -33,7 +32,6 @@ export class ContextProvider extends React.Component {
     }
 
     actions = {
-        setDeployedAddress: (address) => this.setState({deployedAddress: address})
     }
 
     render() {
@@ -44,7 +42,7 @@ export class ContextProvider extends React.Component {
         const abi = this.abi;
         const bytecode = this.bytecode;
         return (
-            <Context.Provider value={{state, actions, web3, account, abi, bytecode}}>
+            <Context.Provider value={{state, actions, web3, account, abi, bytecode, supplyChainArtifact}}>
                 {this.props.children}
             </Context.Provider>
         )

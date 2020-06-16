@@ -10,7 +10,7 @@ function DeployContract(props) {
     const [retailerID, setRetailerID] = useState(null);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
-    const [address, setAddress] = useState(null);
+    const [contract, setContract] = useState(null);
     const [submitting, setSubmitting] = useState(false);
     const [gas, setGas] = useState(null);
     const [gasPrice, setGasPrice] = useState(null);
@@ -19,7 +19,7 @@ function DeployContract(props) {
         setSubmitting(true);
         setSuccess(false);
         setError(false);
-        setAddress(null);
+        setContract(null);
         try {
             const supplyChainContract = await new props.web3.eth.Contract(props.abi);
             supplyChainContract.deploy({
@@ -32,8 +32,7 @@ function DeployContract(props) {
                 gasPrice: gasPrice === null ? '90000000000' : gasPrice
             })
             .then(newContractInstance => {
-                props.actions.setDeployedAddress(newContractInstance.options.address);
-                setAddress(newContractInstance.options.address);
+                setContract(newContractInstance);
                 setSuccess(true);
                 setSubmitting(false);
             });
@@ -149,14 +148,17 @@ function DeployContract(props) {
                             success === true ? (
                             <Alert variant={'success'}>
                                 <Alert.Heading><i className="fas fa-check"></i> Success</Alert.Heading>
-                                <span>Contract was successfully deployed at address: <b>{address}</b></span>
+                                <span>Contract was successfully deployed at address: <b>{contract.options.address}</b></span>
                                 <br/><br/>
-                                <Alert.Link href="#" onClick={() => window.localStorage.setItem('address', address)}>
-                                    <i className="far fa-save"></i> Save Address to Local Storage
+                                <Alert.Link href="#" onClick={() => {
+                                    const savedContract = JSON.stringify(contract);
+                                    window.localStorage.setItem('contract', savedContract);
+                                }}>
+                                    <i className="far fa-save"></i> Save Contract Istance
                                 </Alert.Link>
                                 <br/><br/>
-                                <i>By saving to local storage, when you manage a contract, you will automatically be redirected
-                                    to that contract.
+                                <i>By saving the contract instance, when you manage a contract, you will automatically be able to
+                                    manage that contract without providing its address and abi.
                                 </i>
                             </Alert>) : ''
                         }
