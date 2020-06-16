@@ -35,6 +35,11 @@ function DeployContract(props) {
                 setContract(newContractInstance);
                 setSuccess(true);
                 setSubmitting(false);
+                const savedContract = JSON.stringify({
+                    abi: newContractInstance._jsonInterface,
+                    address: newContractInstance._address
+                });
+                window.localStorage.setItem('contract', savedContract);
             });
         } catch(error) {
             setError(true);
@@ -149,17 +154,6 @@ function DeployContract(props) {
                             <Alert variant={'success'}>
                                 <Alert.Heading><i className="fas fa-check"></i> Success</Alert.Heading>
                                 <span>Contract was successfully deployed at address: <b>{contract.options.address}</b></span>
-                                <br/><br/>
-                                <Alert.Link href="#" onClick={() => {
-                                    const savedContract = JSON.stringify({
-                                        abi: contract._jsonInterface,
-                                        address: contract._address
-                                    });
-                                    window.localStorage.setItem('contract', savedContract);
-                                    alert('Contract saved to local storage!');
-                                }}>
-                                    <i className="far fa-save"></i> Save Contract Istance
-                                </Alert.Link>
                                 <br/><br/>
                                 <i>By saving the contract instance, when you manage a contract, you will automatically be able to
                                     manage that contract without providing its address and abi.
