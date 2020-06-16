@@ -1,5 +1,5 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider');
-const infuraKey = 'https://rinkeby.infura.io/v3/630e59119f164d1384e3ac076ccf979b';
+const infuraKey = 'https://rinkeby.infura.io/v3/421d2d13751d477088f378ceb77dd58c';
 const mnemonic = 'squirrel march broom strong kick blast unique team song song assist million';
 
 
