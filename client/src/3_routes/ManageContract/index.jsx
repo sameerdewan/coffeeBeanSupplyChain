@@ -339,7 +339,7 @@ function ManageContract(props) {
                                                     />
                                                     <InputGroup.Append>
                                                     <Button onClick={() => {
-                                                        Promise.resolve(workingContract.methods.addToPalette(addToPaletteUPC, productPrice).send({from: props.account})
+                                                        workingContract.methods.addToPalette(addToPaletteUPC, productPrice).send({from: props.account})
                                                         .on('transactionHash', function(hash){
                                                             console.log({hash})
                                                         })
@@ -352,7 +352,7 @@ function ManageContract(props) {
                                                         .on('error', (error) => {
                                                             setError(true);
                                                             console.log({error});
-                                                        }));
+                                                        });
                                                     }}><i className="fas fa-pallet"></i> Add to Palette</Button>
                                                     </InputGroup.Append>
                                                 </InputGroup>
@@ -470,7 +470,7 @@ function ManageContract(props) {
                                                 />
                                                 <InputGroup.Append>
                                                 <Button onClick={() => {
-                                                    Promise.resolve(workingContract.methods.initializeSale(initializeSaleUPC, initializeSaleConsumerID).send({from: props.account})
+                                                    workingContract.methods.initializeSale(initializeSaleUPC, initializeSaleConsumerID).send({from: props.account})
                                                     .on('transactionHash', function(hash){
                                                         console.log({hash})
                                                     })
@@ -483,7 +483,7 @@ function ManageContract(props) {
                                                     .on('error', (error) => {
                                                         setError(true);
                                                         console.log({error});
-                                                    }));
+                                                    });
                                                 }}><i className="fas fa-cash-register"></i> Initialize Sale</Button>
                                                 </InputGroup.Append>
                                             </InputGroup>
@@ -531,6 +531,7 @@ function ManageContract(props) {
                                         <FormControl
                                         placeholder="UPC"
                                         onChange={e => {
+
                                         }}
                                         />
                                         <InputGroup.Append>
