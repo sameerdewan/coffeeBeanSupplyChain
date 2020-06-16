@@ -1,6 +1,6 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider');
-const infuraKey = process.env.INFURAKEY || 'https://rinkeby.infura.io/v3/630e59119f164d1384e3ac076ccf979b';
-const mnemonic = process.env.MNEMONIC || 'spirit supply whale amount human item harsh scare congress discover talent hamster';
+const infuraKey = process.env.INFURAKEY;
+const mnemonic = process.env.LOCAL_MNEMONIC || process.env.REMOTE_MNEMONIC;
 
 
 module.exports = {
