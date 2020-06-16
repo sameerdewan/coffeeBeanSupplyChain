@@ -1,13 +1,13 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider');
-const infuraKey = process.env.INFURAKEY;
-const mnemonic = process.env.LOCAL_MNEMONIC || process.env.REMOTE_MNEMONIC;
+const infuraKey = 'https://rinkeby.infura.io/v3/630e59119f164d1384e3ac076ccf979b';
+const mnemonic = 'squirrel march broom strong kick blast unique team song song assist million';
 
 
 module.exports = {
     networks: {
         development: {
             host: '127.0.0.1',
-            port: process.env.PORT,
+            port: 8545,
             network_id: '*'
         },
         rinkeby: {
