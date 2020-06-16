@@ -1,6 +1,6 @@
 import React from 'react';
 import {withContext} from '../context';
-
+import {withRouter} from 'react-router-dom';
 
 function App({state, actions}) {
   return (
@@ -10,4 +10,4 @@ function App({state, actions}) {
   );
 }
 
-export default withContext(App);
+export default withRouter(withContext(App));
