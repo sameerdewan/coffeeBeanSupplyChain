@@ -48,7 +48,6 @@ describe('Coffee Bean Supply Chain', () => {
             })
     
             await supplyChain.harvest(
-                upc, 
                 originFarmerID, 
                 originFarmName, 
                 originFarmInformation, 
