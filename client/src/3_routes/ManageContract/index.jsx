@@ -21,18 +21,26 @@ function ManageContract(props) {
                         </center>
                     </section>
                     <section className={'manage-contract-container'}>
-                        <Alert variant={'success'}>
-                            <Alert.Heading><i className="fas fa-box-open"></i> Address Found</Alert.Heading>
-                            It appears you have a stored address in local storage. Would you like to use it?
-                            <br/><br/>
-                            <Alert.Link href='#'>
-                                <i className="fas fa-arrow-circle-right"></i> Use Stored Address
-                            </Alert.Link>
-                            <br/><br/>
-                            <Alert.Link>
-                                <i className="fas fa-trash-alt"></i> Clear Stored Address
-                            </Alert.Link>
-                        </Alert>
+                        {
+                            storedAddress !== null ? 
+                            <Alert variant={'success'}>
+                                <Alert.Heading><i className="fas fa-box-open"></i> Address Found</Alert.Heading>
+                                It appears you have a stored address in local storage. Would you like to use it?
+                                <br/><br/>
+                                <Alert.Link href='#'>
+                                    <i className="fas fa-arrow-circle-right"></i> Use Stored Address
+                                </Alert.Link>
+                                <br/><br/>
+                                <Alert.Link
+                                    onClick={() => {
+                                        window.localStorage.removeItem('address');
+                                        setStoredAddress(null);
+                                    }}
+                                >
+                                    <i className="fas fa-trash-alt"></i> Clear Stored Address
+                                </Alert.Link>
+                            </Alert> : ''
+                        }
                     </section>
                 </Col>
             </Row>
