@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Container, Row, Col, FormControl, FormLabel, Alert, Button, Spinner, InputGroup} from 'react-bootstrap';
+import {Container, Row, Col, FormControl, Alert, Button, Spinner, InputGroup} from 'react-bootstrap';
 import {withRouter} from 'react-router-dom';
 import {withContext} from '../../1_context';
 import './index.css';
@@ -13,6 +13,30 @@ function ManageContract(props) {
     const [role, setRole] = useState(null);
     const [error, setError] = useState(false);
 
+    // OWNER
+    ///////////////////////////////////
+    // Farmer Address
+    const [farmerAddress, setFarmerAddress] = useState(null);
+    // Distributor Address
+    const [distributorAddress, setDistributorAddress] = useState(null);
+    // Retailer Address
+    const [retailerAddress, setRetailerAddress] = useState(null);
+
+    // FARMER
+    ///////////////////////////////////
+    // Harvest
+    const [farmName, setFarmName] = useState(null);
+    const [farmInformation, setFarmInformation] = useState(null);
+    const [farmLatitude, setFarmLatitude] = useState(null);
+    const [farmLongitude, setFarmLongitude] = useState(null);
+    const [productName, setProductName] = useState(null);
+    // Process
+    const [processUPC, setProcessUPC] = useState(null);
+    // Pack
+    const [packUPC, setPackUPC] = useState(null);
+    // Add to Palette
+    const [addToPaletteUPC, setAddToPaletteUPC] = useState(null);
+
     useEffect(() => {
         const stored_contract = window.localStorage.getItem('contract');
         if (stored_contract !== null) setContract(JSON.parse(stored_contract));
@@ -24,7 +48,7 @@ function ManageContract(props) {
             const role = meta.methods.getUserRole().call({from: props.account});
             Promise.resolve(role).then(role => {
                 setRole(role);
-                setWorkingContract(contract);
+                setWorkingContract(meta);
             }).catch(error => {
                 setError(true);
                 console.log({error})
@@ -86,11 +110,18 @@ function ManageContract(props) {
                                                 <FormControl
                                                 placeholder="Farmer Address"
                                                 onChange={e => {
+                                                    setFarmerAddress(e.target.value);
                                                 }}
                                                 />
                                                 <InputGroup.Append>
                                                 <Button variant={'success'} onClick={() => {
-                                                   
+                                                   Promise.resolve(workingContract.methods.addFarmer(farmerAddress).call({from: props.account}))
+                                                        .then(() => {
+                                                            alert('Farmer Added')
+                                                        }).catch(error => {
+                                                            setError(true);
+                                                            console.log({error});
+                                                        });
                                                 }}><i className="fas fa-plus"></i> Add Farmer</Button>
                                                 </InputGroup.Append>
                                             </InputGroup>
@@ -99,11 +130,18 @@ function ManageContract(props) {
                                                 <FormControl
                                                 placeholder="Distributor Address"
                                                 onChange={e => {
+                                                    setDistributorAddress(e.target.value);
                                                 }}
                                                 />
                                                 <InputGroup.Append>
                                                 <Button variant={'success'} onClick={() => {
-                                                   
+                                                    Promise.resolve(workingContract.methods.addDistributor(distributorAddress).call({from: props.account}))
+                                                        .then(() => {
+                                                            alert('Distributor Added')
+                                                        }).catch(error => {
+                                                            setError(true);
+                                                            console.log({error});
+                                                        });
                                                 }}><i className="fas fa-plus"></i> Add Distributor</Button>
                                                 </InputGroup.Append>
                                             </InputGroup>
@@ -112,17 +150,32 @@ function ManageContract(props) {
                                                 <FormControl
                                                 placeholder="Retailer Address"
                                                 onChange={e => {
+                                                    setRetailerAddress(e.target.value);
                                                 }}
                                                 />
                                                 <InputGroup.Append>
                                                 <Button variant={'success'} onClick={() => {
-                                                   
+                                                    Promise.resolve(workingContract.methods.addRetailer(retailerAddress).call({from: props.account}))
+                                                        .then(() => {
+                                                            alert('Retailer Added')
+                                                        }).catch(error => {
+                                                            setError(true);
+                                                            console.log({error});
+                                                        });
                                                 }}><i className="fas fa-plus"></i> Add Retailer</Button>
                                                 </InputGroup.Append>
                                             </InputGroup>
                                             <br/>
                                             <center>
-                                                <Button variant={'danger'}>
+                                                <Button variant={'danger'} onClick={() => {
+                                                    Promise.resolve(workingContract.methods.kill().call({from: props.account}))
+                                                        .then(() => {
+                                                            alert('Contract destroyed')
+                                                        }).catch(error => {
+                                                            setError(true);
+                                                            console.log({error});
+                                                        });
+                                                }}>
                                                     <i className="fas fa-skull-crossbones"></i> Kill Contract
                                                 </Button>
                                             </center>
@@ -134,22 +187,46 @@ function ManageContract(props) {
                                             <center>
                                                 <Alert.Heading><i className="fas fa-tractor"></i> Farmer</Alert.Heading>
                                                 <br/><br/>
-                                                <FormControl placeholder={'Farm Name'}/>
-                                                <FormControl placeholder={'Farm Information'}/>
-                                                <FormControl placeholder={'Farm Latitude'}/>
-                                                <FormControl placeholder={'Farm Longitude'}/>
-                                                <FormControl placeholder={'Product Name'}/>
-                                                <Button><i className="fas fa-seedling"></i> Harvest</Button>
+                                                <FormControl placeholder={'Farm Name'} onChange={e => setFarmName(e.target.value)}/>
+                                                <FormControl placeholder={'Farm Information'} onChange={e => setFarmInformation(e.target.value)}/>
+                                                <FormControl placeholder={'Farm Latitude'} onChange={e => setFarmLatitude(e.target.value)}/>
+                                                <FormControl placeholder={'Farm Longitude'} onChange={e => setFarmLongitude(e.target.value)}/>
+                                                <FormControl placeholder={'Product Name'} onChange={e => setProductName(e.target.value)}/>
+                                                <Button
+                                                    onClick={() => {
+                                                        Promise.resolve(workingContract.methods.harvest(
+                                                            props.account,
+                                                            farmName,
+                                                            farmInformation,
+                                                            farmLatitude,
+                                                            farmLongitude,
+                                                            productName
+                                                        ).call({from: props.account}))
+                                                            .then(() => {
+                                                                alert('Harvested!')
+                                                            }).catch(error => {
+                                                                setError(true);
+                                                                console.log({error});
+                                                            });
+                                                    }}
+                                                ><i className="fas fa-seedling"></i> Harvest</Button>
                                                 <br/><br/>
                                                 <InputGroup className="mb-3">
                                                     <FormControl
                                                     placeholder="UPC"
                                                     onChange={e => {
+                                                        setProcessUPC(e.target.value);
                                                     }}
                                                     />
                                                     <InputGroup.Append>
                                                     <Button onClick={() => {
-                                                    
+                                                        Promise.resolve(workingContract.methods.process(processUPC).call({from: props.account}))
+                                                            .then(() => {
+                                                                alert('Processed!')
+                                                            }).catch(error => {
+                                                                setError(true);
+                                                                console.log({error});
+                                                            });
                                                     }}><i className="fas fa-cogs"></i> Process</Button>
                                                     </InputGroup.Append>
                                                 </InputGroup>
@@ -158,11 +235,18 @@ function ManageContract(props) {
                                                     <FormControl
                                                     placeholder="UPC"
                                                     onChange={e => {
+                                                        setPackUPC(e.target.value);
                                                     }}
                                                     />
                                                     <InputGroup.Append>
                                                     <Button onClick={() => {
-                                                    
+                                                        Promise.resolve(workingContract.methods.pack(packUPC).call({from: props.account}))
+                                                            .then(() => {
+                                                                alert('Packed!')
+                                                            }).catch(error => {
+                                                                setError(true);
+                                                                console.log({error});
+                                                            });
                                                     }}><i className="fas fa-box-open"></i> Pack</Button>
                                                     </InputGroup.Append>
                                                 </InputGroup>
@@ -171,11 +255,18 @@ function ManageContract(props) {
                                                     <FormControl
                                                     placeholder="UPC"
                                                     onChange={e => {
+                                                        setAddToPaletteUPC(e.target.value);
                                                     }}
                                                     />
                                                     <InputGroup.Append>
                                                     <Button onClick={() => {
-                                                    
+                                                        Promise.resolve(workingContract.methods.addToPalette(addToPaletteUPC).call({from: props.account}))
+                                                            .then(() => {
+                                                                alert('Added to Palette!');
+                                                            }).catch(error => {
+                                                                setError(true);
+                                                                console.log({error});
+                                                            });
                                                     }}><i className="fas fa-pallet"></i> Add to Palette</Button>
                                                     </InputGroup.Append>
                                                 </InputGroup>
