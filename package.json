@@ -6,7 +6,7 @@
     "test": "test"
   },
   "scripts": {
-    "ui": "cd client && npm start",
+    "client": "cd client && npm start",
     "ganache": "ganache-cli -m 'spirit supply whale amount human item harsh scare congress discover talent hamster'",
     "migrate": "truffle migrate --network rinkeby",
     "test": "truffle test"
