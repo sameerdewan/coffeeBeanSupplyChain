@@ -21,7 +21,7 @@ describe('Coffee Bean Supply Chain', () => {
         const retailerID = accounts[3];
         const consumerID = accounts[4];
 
-        const productNotes = 'Sameer Original Blend Coffee Beans';
+        const productName = 'Coffee';
         const productPrice = web3.utils.toWei('1', 'ether');
         let productID = sku + upc;
 
@@ -33,7 +33,7 @@ describe('Coffee Bean Supply Chain', () => {
             originFarmInformation, 
             originFarmLatitude, 
             originFarmLongitude, 
-            productNotes, 
+            productName, 
             productPrice
         });
         testLogger.logTestsStart();
@@ -54,7 +54,7 @@ describe('Coffee Bean Supply Chain', () => {
                 originFarmInformation, 
                 originFarmLatitude, 
                 originFarmLongitude, 
-                productNotes, 
+                productName,
                 { 
                     from: originFarmerID 
                 }
@@ -221,7 +221,7 @@ describe('Coffee Bean Supply Chain', () => {
             assert.equal(resultCoffeeSupplyChain[6], originFarmInformation, 'Error: Missing or Invalid originFarmInformation');
             assert.equal(resultCoffeeSupplyChain[7], originFarmLatitude, 'Error: Missing or Invalid originFarmLatitude');
             assert.equal(resultCoffeeSupplyChain[8], originFarmLongitude, 'Error: Missing or Invalid originFarmLongitude');
-            assert.equal(resultCoffeeSupplyChain[9], productNotes, 'Error: Missing or Invalid productNotes');   
+            assert.equal(resultCoffeeSupplyChain[9], productName, 'Error: Missing or Invalid productName');   
         });
 
         it('should correctly run fetchProductHistory()', async () => {

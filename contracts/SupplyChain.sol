@@ -43,7 +43,7 @@ contract SupplyChain is Ownable, AccessControl {
         string  originFarmLatitude; // Farm Latitude
         string  originFarmLongitude;  // Farm Longitude
         uint    productID;  // Product ID potentially a combination of upc + sku
-        string  productNotes; // Product Notes
+        string  productName; // Product Notes
         uint    productPrice; // Product Price
         State   itemState;  // Product State as represented in the enum above
         address payable distributorID;  // Metamask-Ethereum address of the Distributor
@@ -182,7 +182,7 @@ contract SupplyChain is Ownable, AccessControl {
     string memory _originFarmInformation,
     string  memory _originFarmLatitude,
     string  memory _originFarmLongitude,
-    string  memory _productNotes
+    string  memory _productName
     ) public onlyFarmer(msg.sender) {
         items[_upc].sku = sku;
         items[_upc].upc = _upc;
@@ -191,7 +191,7 @@ contract SupplyChain is Ownable, AccessControl {
         items[_upc].originFarmInformation = _originFarmInformation;
         items[_upc].originFarmLatitude = _originFarmLatitude;
         items[_upc].originFarmLongitude = _originFarmLongitude;
-        items[_upc].productNotes = _productNotes;
+        items[_upc].productName = _productName;
         items[_upc].ownerID = _originFarmerId;
         items[_upc].itemState = State.Harvested;
         emit Harvested(_upc);
@@ -277,7 +277,7 @@ contract SupplyChain is Ownable, AccessControl {
     string memory originFarmInformation,
     string memory originFarmLatitude,
     string memory originFarmLongitude,
-    string memory productNotes
+    string memory productName
     ) {
         Item memory item = items[_upc];
 
@@ -290,7 +290,7 @@ contract SupplyChain is Ownable, AccessControl {
         originFarmInformation = item.originFarmInformation;
         originFarmLatitude = item.originFarmLatitude;
         originFarmLongitude = item.originFarmLongitude;
-        productNotes = item.productNotes;
+        productName = item.productName;
     }
 
     function fetchProductHistory(
