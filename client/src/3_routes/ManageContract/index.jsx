@@ -7,10 +7,7 @@ import './index.css';
 
 function ManageContract(props) {
     const [contract, setContract] = useState(null);
-    const [abi, setContractABI] = useState(null);
-    const [address, setAddress] = useState(null);
     const [usingSaved, setUsingSaved] = useState(false);
-    const [usingEntered, setUsingEntered] = useState(false);
 
     const [workingContract, setWorkingContract] = useState(null);
     const [role, setRole] = useState(null);
@@ -46,7 +43,7 @@ function ManageContract(props) {
                     </section>
                     <section className={'manage-contract-container'}>
                         {
-                            (contract !== null && usingEntered === false && usingSaved !== true && error !== true) ? 
+                            (contract !== null && usingSaved !== true && error !== true) ? 
                             <Alert variant={'success'}>
                                 <Alert.Heading><i className="fas fa-box-open"></i> Contract Found</Alert.Heading>
                                 It appears you have a stored contract in local storage. Would you like to use it?
@@ -75,7 +72,7 @@ function ManageContract(props) {
                             </Alert>
                         }
                         {
-                            ((contract !== null && usingEntered === false && usingSaved !== true) || contract === null) && error === false  ? 
+                            ((contract !== null && usingSaved !== true) || contract === null) && error === false  ? 
                             <React.Fragment>
                                 <FormLabel>Contract ABI</FormLabel>
                                 <FormControl as={'textarea'}/>
