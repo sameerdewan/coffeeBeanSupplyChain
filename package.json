@@ -6,13 +6,17 @@
     "test": "test"
   },
   "scripts": {
-    "ui": "cd client && npm start"
+    "ui": "cd client && npm start",
+    "ganache": "ganache-cli -m 'spirit supply whale amount human item harsh scare congress discover talent hamster'",
+    "migrate": "truffle migrate --network rinkeby",
+    "test": "truffle test"
   },
   "author": "Sameer Dewan",
   "license": "ISC",
   "dependencies": {
     "@openzeppelin/contracts": "3.0.2",
     "@truffle/hdwallet-provider": "1.0.35",
-    "colors": "^1.4.0"
+    "colors": "1.4.0",
+    "ganache-cli": "6.9.1"
   }
 }
