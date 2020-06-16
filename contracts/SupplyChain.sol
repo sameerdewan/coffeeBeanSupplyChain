@@ -175,6 +175,18 @@ contract SupplyChain is Ownable, AccessControl {
         grantRole(RETAILER_ROLE, retailer);
     }
 
+    function getUserRole(
+    address payable _address
+    ) public view returns (
+        string memory
+    ) {
+        if (hasRole(FARMER_ROLE, _address)) return 'farmer';
+        if (hasRole(DISTRIBUTOR_ROLE, _address)) return 'distributor';
+        if (hasRole(RETAILER_ROLE, _address)) return 'retailer';
+        if (hasRole(CONSUMER_ROLE, _address)) return 'consumer';
+        return 'none';
+    }
+
     function harvest(
     uint _upc,
     address payable _originFarmerId,
