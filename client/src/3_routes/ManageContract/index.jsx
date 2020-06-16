@@ -72,17 +72,6 @@ function ManageContract(props) {
                             </Alert>
                         }
                         {
-                            ((contract !== null && usingSaved !== true) || contract === null) && error === false  ? 
-                            <React.Fragment>
-                                <FormLabel>Contract ABI</FormLabel>
-                                <FormControl as={'textarea'}/>
-                                <FormLabel>Contract Address</FormLabel>
-                                <FormControl />
-                                <br/>
-                                <Button><i className="fas fa-file-signature"></i> Manage Contract</Button>
-                            </React.Fragment> : ''
-                        }
-                        {
                             contract !== null && usingSaved === true && role !== null && workingContract !== null ? 
                             <React.Fragment>
                                 {
