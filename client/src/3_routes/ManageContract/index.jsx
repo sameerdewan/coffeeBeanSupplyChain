@@ -25,7 +25,6 @@ function ManageContract(props) {
     // FARMER
     ///////////////////////////////////
     // Harvest
-    const [productUPC, setProductUPC] = useState(null);
     const [farmName, setFarmName] = useState(null);
     const [farmInformation, setFarmInformation] = useState(null);
     const [farmLatitude, setFarmLatitude] = useState(null);
@@ -209,7 +208,6 @@ function ManageContract(props) {
                                             <center>
                                                 <Alert.Heading><i className="fas fa-tractor"></i> Farmer</Alert.Heading>
                                                 <br/><br/>
-                                                <FormControl placeholder={'Product UPC'} onChange={e => setProductUPC(e.target.value)}/>
                                                 <FormControl placeholder={'Farm Name'} onChange={e => setFarmName(e.target.value)}/>
                                                 <FormControl placeholder={'Farm Information'} onChange={e => setFarmInformation(e.target.value)}/>
                                                 <FormControl placeholder={'Farm Latitude'} onChange={e => setFarmLatitude(e.target.value)}/>
@@ -218,7 +216,6 @@ function ManageContract(props) {
                                                 <Button
                                                     onClick={() => {
                                                         Promise.resolve(workingContract.methods.harvest(
-                                                            productUPC,
                                                             props.account,
                                                             farmName,
                                                             farmInformation,
