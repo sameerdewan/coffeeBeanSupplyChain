@@ -13,4 +13,6 @@ div.loader > center > div.spinner-grow {
 
 code {
     color: #004085 !important;
+    background-color: white;
+    padding: 3px;
 }

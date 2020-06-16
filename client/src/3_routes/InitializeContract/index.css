@@ -9,7 +9,7 @@ section.abi-container > pre {
     font-size: 12px;
 }
 
-section.abi-label, section.initialize-contract-label, section.initialize-contract-container {
+section.abi-label, section.initialize-contract-label {
     border-top: 1px solid #b8daff;;
     border-left: 1px solid #b8daff;;
     border-right: 1px solid #b8daff;;
@@ -17,13 +17,25 @@ section.abi-label, section.initialize-contract-label, section.initialize-contrac
 }
 
 section.initialize-contract-container, section.abi-container {
-    height: 80vh;
-    max-height: 80vh;
     border: #b8daff 1px solid;
     overflow: scroll;
 }
 
 section.initialize-contract-container {
+    height: fit-content;
+    margin-bottom: 100px;
+}
+
+section.abi-container {
+    height: 80vh;
+    max-height: 80vh;
+}
+
+section.initialize-contract-container {
     padding-left: 50px;
     padding-right: 50px;
+}
+
+section.initialize-contract-button {
+    padding-bottom: 25px;
 }
