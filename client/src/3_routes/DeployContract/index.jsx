@@ -155,8 +155,7 @@ function DeployContract(props) {
                                 <Alert.Heading><i className="fas fa-check"></i> Success</Alert.Heading>
                                 <span>Contract was successfully deployed at address: <b>{contract.options.address}</b></span>
                                 <br/><br/>
-                                <i>By saving the contract instance, when you manage a contract, you will automatically be able to
-                                    manage that contract without providing its address and abi.
+                                <i>Your contract instance has been saved to local storage and is ready to mange in the mange tab.
                                 </i>
                             </Alert>) : ''
                         }
