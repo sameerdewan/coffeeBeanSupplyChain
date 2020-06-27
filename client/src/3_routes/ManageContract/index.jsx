@@ -67,7 +67,10 @@ function ManageContract(props) {
 
     useEffect(() => {
         const stored_contract = window.localStorage.getItem('contract');
-        if (stored_contract !== null) setContract(JSON.parse(stored_contract));
+        if (stored_contract !== null) {
+            setContract(JSON.parse(stored_contract));
+            setUsingSaved(true);
+        }
     }, [props.state.deployedContract]);
 
     useEffect(() => {
@@ -95,7 +98,7 @@ function ManageContract(props) {
                     </section>
                     <section className={'manage-contract-container'}>
                         {
-                            (contract !== null && usingSaved !== true && error !== true) ? 
+                            (contract !== null && usingSaved === true && error !== true) ? 
                             <Alert variant={'success'}>
                                 <Alert.Heading><i className="fas fa-box-open"></i> Contract Found</Alert.Heading>
                                 It appears you have a stored contract in local storage. Would you like to use it?
