@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {Container, Row, Col, FormControl, Alert, Button, Spinner, InputGroup} from 'react-bootstrap';
+import Dropzone from 'react-dropzone';
 import {withRouter} from 'react-router-dom';
 import {withContext} from '../../1_context';
 import './index.css';
@@ -69,7 +70,6 @@ function ManageContract(props) {
         const stored_contract = window.localStorage.getItem('contract');
         if (stored_contract !== null) {
             setContract(JSON.parse(stored_contract));
-            setUsingSaved(true);
         }
     }, [props.state.deployedContract]);
 
@@ -87,6 +87,16 @@ function ManageContract(props) {
         }
     });
 
+    const setUploadedContract = (files) => {
+        const fileReader = new FileReader();
+        const blob = new Blob([files[0]], {type:"application/json"});
+        fileReader.addEventListener('load', e => {
+            setContract(JSON.parse(e.target.result));
+            setUsingSaved(true);
+        });
+        fileReader.readAsText(blob);
+    };
+
     return (
         <Container>
             <Row>
@@ -98,7 +108,7 @@ function ManageContract(props) {
                     </section>
                     <section className={'manage-contract-container'}>
                         {
-                            (contract !== null && usingSaved === true && error !== true) ? 
+                            (contract !== null && usingSaved === false && error !== true) ? 
                             <Alert variant={'success'}>
                                 <Alert.Heading><i className="fas fa-box-open"></i> Contract Found</Alert.Heading>
                                 It appears you have a stored contract in local storage. Would you like to use it?
@@ -118,6 +128,24 @@ function ManageContract(props) {
                                     <i className="fas fa-trash-alt"></i> Clear Stored Contract
                                 </Alert.Link>
                             </Alert> : ''
+                        }
+                        {
+                            (usingSaved === false && error !== true) &&
+                            <Dropzone onDrop={setUploadedContract}>
+                                {({getRootProps, getInputProps}) => (
+                                    <section className={'dropzone'}>
+                                        <div {...getRootProps()}>
+                                            <input {...getInputProps()}/>
+                                            <p className={'dropzone-container'}>
+                                                <Alert.Link>
+                                                    <i className="fas fa-upload"></i>&nbsp;
+                                                    Drag/Drop or click to Upload Deployed Contract Data
+                                                </Alert.Link>
+                                            </p>
+                                        </div>
+                                    </section>
+                                )}
+                            </Dropzone>
                         }
                         {
                             error === true && 

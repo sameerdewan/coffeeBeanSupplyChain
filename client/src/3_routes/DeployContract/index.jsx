@@ -11,9 +11,22 @@ function DeployContract(props) {
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(false);
     const [contract, setContract] = useState(null);
+    const [downloadedContract, setDownloadedContract] = useState(null);
     const [submitting, setSubmitting] = useState(false);
     const [gas, setGas] = useState(null);
     const [gasPrice, setGasPrice] = useState(null);
+
+    const downloadContract = async () => {
+        const clientJSON = downloadedContract;
+        const blob = new Blob([clientJSON], {type: 'application/json'});
+        const href = await URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = href;
+        link.download = 'contract-data.json';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
     
     const onSubmit = async () => {
         setSubmitting(true);
@@ -39,6 +52,7 @@ function DeployContract(props) {
                     abi: newContractInstance._jsonInterface,
                     address: newContractInstance._address
                 });
+                setDownloadedContract(savedContract);
                 window.localStorage.setItem('contract', savedContract);
             });
         } catch(error) {
@@ -155,8 +169,17 @@ function DeployContract(props) {
                                 <Alert.Heading><i className="fas fa-check"></i> Success</Alert.Heading>
                                 <span>Contract was successfully deployed at address: <b>{contract.options.address}</b></span>
                                 <br/><br/>
-                                <i>Your contract instance has been saved to local storage and is ready to mange in the mange tab.
-                                </i>
+                                <i>Your contract instance has been saved to local storage and is ready to mange in the mange tab.</i>
+                                &nbsp;<i>You can download the contract data for reuse in case your local storage is cleared or you are managing multiple different contracts.</i>
+                                <br/><br/>
+                                <span>
+                                    &nbsp;
+                                    <b>
+                                        <Alert.Link href='#' variant={'outline-success'} onClick={downloadContract}>
+                                            <i className="far fa-save"></i> Download contract data
+                                        </Alert.Link>
+                                    </b>
+                                </span>
                             </Alert>) : ''
                         }
                         <FormControl 
