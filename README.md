@@ -11,6 +11,9 @@ Node v10.16.3
 
 Web3.js v1.2.1
 
+Contract Address 0xC77cF5850E608A9D342de335fe6928493AE303f3
+
+Transaction Hash 0x95905ddbf003b46cef29981a48f22b6272c50f78ed62e760e4ca9836993b43c8
 ## How to Test
 First, run the following:
 

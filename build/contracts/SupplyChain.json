@@ -41936,8 +41936,8 @@
         }
       },
       "links": {},
-      "address": "0x4Bd1bb3Aa0CCdf3e9573c02C72FABa8aA385Dc50",
-      "transactionHash": "0xfa1d9148249beff46003182888b8d59df6fb6c0927697fc34e638ae41db3fab3"
+      "address": "0xE31C529b25a31375e5bc6d8d611eDE10fa444666",
+      "transactionHash": "0x95905ddbf003b46cef29981a48f22b6272c50f78ed62e760e4ca9836993b43c8"
     },
     "5777": {
       "events": {
@@ -42134,7 +42134,7 @@
     }
   },
   "schemaVersion": "3.1.0",
-  "updatedAt": "2020-06-16T19:22:25.708Z",
+  "updatedAt": "2020-07-16T14:11:25.326Z",
   "networkType": "quorum",
   "devdoc": {
     "methods": {

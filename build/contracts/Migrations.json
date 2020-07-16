@@ -916,8 +916,8 @@
     "4": {
       "events": {},
       "links": {},
-      "address": "0x423224567f882801b0eD997b02A7d8cCe2E76268",
-      "transactionHash": "0xf293601929928d78f13f1069796bafb94990a3c109e9efec2c1604fc8f0b1089"
+      "address": "0xC77cF5850E608A9D342de335fe6928493AE303f3",
+      "transactionHash": "0x2293cae304e65180961a201c2b4b219f85359f2d5a2e69065e3a7bd3f218762a"
     },
     "5777": {
       "events": {},
@@ -927,7 +927,7 @@
     }
   },
   "schemaVersion": "3.1.0",
-  "updatedAt": "2020-06-16T19:22:25.727Z",
+  "updatedAt": "2020-07-16T14:11:25.346Z",
   "networkType": "quorum",
   "devdoc": {
     "methods": {}
